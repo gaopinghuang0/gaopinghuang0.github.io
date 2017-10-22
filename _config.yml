@@ -1,0 +1,25 @@
+# Permalinks
+permalink:      /:year-:month-:day/:title
+
+# Setup
+title:          Gaoping's Blog
+paginate:       5
+baseurl:        ''
+url:            "https://gaopinghuang0.github.io"
+
+# Assets
+sass:
+  sass_dir:     _sass
+  style:        :compressed
+
+# Build settings
+markdown:       kramdown
+
+# About
+author:
+  name:         Gaoping Huang
+  email:        gaopinghuang@gmail.com
+
+# Gems
+plugins:
+  - jekyll-paginate
