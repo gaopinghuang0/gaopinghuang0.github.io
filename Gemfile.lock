@@ -59,6 +59,3 @@ DEPENDENCIES
   jekyll-paginate
   minima (~> 2.0)
   tzinfo-data
-
-BUNDLED WITH
-   1.15.4
