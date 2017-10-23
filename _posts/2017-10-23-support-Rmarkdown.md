@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Supporting R Markdown with Jekyll and Github.io"
+title: "Supporting R Markdown with Jekyll and knitr"
 author: "Gaoping"
 ---
 
