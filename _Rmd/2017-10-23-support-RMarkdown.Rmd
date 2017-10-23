@@ -15,7 +15,7 @@ The first blog is adapted from the second blog, so their basic idea is the same.
 ## Use R script to call knitr
 Here are the steps:
 
-1. Create a directory called `_Rmd` at the root level of blog directory, which will store all R Markdown files. In `_Rmd`, an R script is created (called `render_post.R`), which is adapted from the first blog and shown below.
+1. Create a directory called `_Rmd` at the root level of the Jekyll directory, which will store all R Markdown files. In `_Rmd`, an R script is also created (called `render_post.R`), which is adapted from the first blog and shown below.
 2. Configure the paths for each directory accordingly, for example, `posts.path` is `_posts`.
 3. Create an R Markdown post under `_Rmd`, such as `2017-10-23-test-markdown.Rmd`. At the beginning of this file, remember to add proper front matter for Jekyll.
 4. Run `KnitPost` to convert files. For simplicity, in the next section, I created a bash script to convert `_Rmd/*.Rmd` to `_post/*.md`.
@@ -78,11 +78,11 @@ KnitPost <- function(site.path='/pathToYourBlog/', overwriteAll=F, overwriteOne=
 ```
 
 ## Use bash script to call R script
-I created a bash script (called `convert_rmd.sh`) under the root level of blog directory, which is adapted from the second blog. It can convert a specific R Markdown file under `_Rmd` to Jekyll markdown under `_posts`.
+I created a bash script (called `convert_rmd.sh`) under the root level of the Jekyll directory, which is adapted from the second blog. It can convert a specific R Markdown file under `_Rmd/` to Jekyll markdown under `_posts/`.
 
-The usage is `./convert_rmd.sh _Rmd/YYYY-mm-dd-something.Rmd`.
+The usage is `./convert_rmd.sh _Rmd/YYYY-mm-dd-something.Rmd`. 
 
-The last part shows a modification to support Rscript with Cygwin on Windows.
+To support Rscript with Cygwin on Windows, I added platform check at the bottom.
 
 ```bash
 #!/bin/bash
@@ -121,8 +121,27 @@ case "$(uname -s)" in
 esac
 ```
 
-## Sample Output
-Below shows sample output, such as basic console and ggplot2.
+## Auto-rerun when .Rmd file changes
+It would be cumbersome if we need to manually rerun the above script whenener we make changes to an R Markdown file.
+
+Also, if we could automatically rerun the above script, then we could view the generated html in the browser (locally) immediately.
+
+To achieve this, I'm using a command called [when-changed](https://github.com/joh/when-changed). It is cross-platform and works well on Windows; other possible solutions might be `nodemon` or `inotifywait`, based on this [question](https://superuser.com/questions/181517/how-to-execute-a-command-whenever-a-file-changes).
+
+```bash
+# install when-changed
+pip install https://github.com/joh/when-changed/archive/master.zip
+
+# Usage: when-changed FILE -c COMMAND (watch FILE changes and exec COMMAND) 
+when-changed _RMD/some-rmd-file.Rmd -c bash convert_rmd.sh _RMD/some-rmd-file.Rmd
+
+# assume that Jekyll is also running in a different tab
+jekyll serve
+```
+In such case, an R Markdown file will be automatically converted to `_posts/*.md`, and be further compiled to html.
+
+## Sample output
+Below shows a sample output, such as basic console and ggplot2, copied from [example-r-markdown.rmd](https://gist.github.com/jeromyanglim/2716336).
 
 #### Prepare for analyses
 ```{r }
