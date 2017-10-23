@@ -7,10 +7,13 @@ author: "Gaoping"
 Blogging with Jekyll and Markdown is good. Blogging with Jekyll and R Markdown is even better.
 
 Based on the following two posts, I figured out how to support R Markdown using knitr. The basic idea is to use knitr to convert R Markdown files to Jekyll friendly markdown files.
+
 1. [Blogging with Jekyll and R Markdown using knitr](http://brooksandrew.github.io/simpleblog/articles/blogging-with-r-markdown-and-jekyll-using-knitr/) by Andrew
 2. [Publishing R Markdown using Jekyll](https://chepec.se/2014/07/16/knitr-jekyll) by chepec
 
 The first blog is adapted from the second blog, so their basic idea is the same. Based on their idea, I made some minor changes - all the credit goes to them.
+
+Also, I added some extra features such as auto-rerun bash script whenever we make changes to an R Markdown file, even on Windows.
 
 ## Use R script to call knitr
 Here are the steps:
