@@ -1,5 +1,11 @@
 #!/bin/bash
 # Credit: adapted from https://chepec.se/2014/07/16/knitr-jekyll
+# Program:
+#   Program converts a specific R Markdown file into Markdown file 
+#   with the same name and stores under _posts/ dir.
+# History:
+# 10/26/2017  Gaoping  First release
+
 
 function show_help {
   echo "Usage: convert_rmd.sh [filename.Rmd] ..."
