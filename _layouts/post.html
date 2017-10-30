@@ -20,7 +20,7 @@ layout: default
   <h1 class="post-title">{{ page.title }}</h1>
   <div class="post-line"></div>
 
-  {{ content }}
+    {{ content }}
 
 </div>
 
@@ -33,4 +33,9 @@ layout: default
   {% endif %}
 
   <a href="#" class="top">Top</a>
+</div>
+
+<!-- Post comments -->
+<div class="notecomments">
+  {% include disqus.html %}  
 </div>
