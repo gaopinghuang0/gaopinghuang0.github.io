@@ -143,6 +143,12 @@ jekyll serve
 ```
 In such case, an R Markdown file will be automatically converted to `_posts/*.md`, and be further compiled to html.
 
+## Support math equations
+See [How to use MathJax in Jekyll generated Github pages](http://haixing-hu.github.io/programming/2013/09/20/how-to-use-mathjax-in-jekyll-generated-github-pages/) by Haixing Hu.
+
+## Set fig.path for different post
+See [Blogging About R Code with R Markdown, Knitr, and Jekyll](https://nicolewhite.github.io/2015/02/07/r-blogging-with-rmarkdown-knitr-jekyll.html) by Nicole White.
+
 ## Sample output
 Below shows a sample output, such as basic console and ggplot2, copied from [example-r-markdown.rmd](https://gist.github.com/jeromyanglim/2716336).
 

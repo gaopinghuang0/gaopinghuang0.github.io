@@ -13,4 +13,10 @@
   <!-- CSS -->
   <link rel="stylesheet" href="{{ site.baseurl }}/styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- support math equations -->
+  <!-- credit: http://haixing-hu.github.io/programming/2013/09/20/how-to-use-mathjax-in-jekyll-generated-github-pages/ -->
+  {% if page.use_math %}
+    {% include mathjax_support.html %}
+  {% endif %}
 </head>
