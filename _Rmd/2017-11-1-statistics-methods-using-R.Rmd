@@ -1,0 +1,80 @@
+---
+layout: post
+title: "Summary of Statistics Methods using R"
+author: "Gaoping Huang"
+use_math: true
+---
+
+
+A brief summary of common statistic methods using R from the book "Discovering Statistics using R" by Andy Field.
+
+
+## Useful packages
+* *stats* - built-in, auto-loaded,
+    * `wilcox.test()`
+* *car* - for Levene's test, Type III sums of squares
+    * `leveneTest()`, such as `leveneTest(viagraData$libido, viagraData$dose, center = median)`
+    * `Anova()`, such as `Anova(modelName, type="III")`, see section 11.4.7
+* *pastecs* - for descriptive statistics
+    * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
+* *multcomp* - for *post hoc* tests
+* *ez* - for *ANOVA*
+* *compute.es* - for effect sizes
+    * `mes()`, see section 11.6, calculate effect sizes between all combinations of groups
+* *effects* - for adjusted means
+    * `effect()`, see section 11.4.8
+* *ggplot2* - for graphs
+* *WRS* - for robust tests, see section 5.8.4
+  * `ancova()` and `ancboot()`, see section 11.5
+
+## Check assumptions
+### 1. Normality
+Shapiro-Wilk test
+
+### 2. Homogeneity of variance
+
+Levene's test
+
+## Effect size
+
+* Eta squared $(\eta^2)$, see chapter 10
+
+* Partial eta squared (*partial* $\eta^2$ ), see section 11.6
+
+* Omega squared $(\omega^2)$, see section 10.7.
+This measure computes the overall effect size. It can be calculated only when we have equal numbers of participants in each group. If it's not the case, then use `rcontrast()` below.
+
+* `rcontrast(t, df)`, see section 10.7 and 11.6.
+This measure computes the effect size for more focused comparisons like planned contrasts.
+``` {r rcontrast}
+rcontrast<-function(t, df)
+{
+  r<-sqrt(t^2/(t^2 + df))
+  print(paste("r = ", r))
+}
+```
+
+* `mes()`, see section 11.6.
+This method calculates effect sizes between all combinations of groups
+
+
+<!-- ## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+ -->
