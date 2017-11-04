@@ -6,14 +6,14 @@ use_math: true
 ---
 
 
-A brief summary of common statistic methods using R from the book "Discovering Statistics using R" by Andy Field.
+A brief summary of common statistic methods using R from the book "Discovering Statistics using R (2012)" by Andy Field.
 
 
 ## Useful packages
 * *boot* - for bootstrap
     * `boot()`, see section 6.5.7, such as `boot_kendall<-boot(liarData, bootTau, 2000)`
     * `boot.ci()`, confidence interval, such as `boot.ci(boot_kendall, conf=0.99)`, see section 6.5.7
-* *car* - for Levene's test, Type III sums of squares
+* *car* - for Levene's test, Type III sums of squares, and more
     * `leveneTest()`, such as `leveneTest(viagraData$libido, viagraData$dose, center = median)`
     * `Anova()`, such as `Anova(modelName, type="III")`, see section 11.4.7
 * *compute.es* - for effect sizes
@@ -27,6 +27,7 @@ A brief summary of common statistic methods using R from the book "Discovering S
     * `pcor.test()`, significance of partial correlation, see section 6.6.2
 * *Hmisc* - for correlation
     * `rcorr()`, for correlation, see section 6.5.3
+* *mlogit* - for multinomial logistic regression
 * *multcomp* - for *post hoc* tests
 * *pastecs* - for descriptive statistics
     * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
@@ -34,11 +35,14 @@ A brief summary of common statistic methods using R from the book "Discovering S
     * `polyserial()`, biserial correlation, see section 6.5.8
 * *psych* -
     * `describe()` - such as `describe(dlf$day1)`, similar to `stat.desc()` above.
+* *QuantPsyc* - to get standardized regression coefficients
 * *stats* - built-in, auto-loaded
     * `wilcox.test()`
     * `shapiro.test()`, Shapiro-Wilk test, such as `shapiro.test(variable)`
     * `cor()`, for correlation
     * `cor.test()`, for correlation
+    * `anova()`, compare models, see section 7.8.4.2; which is different from `Anova()` from *car* package
+    * `confint()`, computes confidence interval
 * *WRS* - for robust tests, see section 5.8.4
   * Updated website: [http://dornsife.usc.edu/labs/rwilcox/software/]
   * `source("http://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v34.txt")`  -- new website
@@ -114,6 +118,9 @@ This indicates that the variances are not significantly different (i.e., they ar
 
 ### Dealing with non-normality and unequal variances
 Transforming data, such as log transformation, square root transformation, see section 5.8.2.
+
+### 3. Independence
+In regression, indepen errors
 
 
 ## Effect size
