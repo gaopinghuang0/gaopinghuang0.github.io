@@ -1,5 +1,9 @@
 <p>
-  <button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="{{ include.target }}" aria-expanded="false" aria-controls="{{ include.target }}">
+  <button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#{{ include.target }}" aria-expanded="false" aria-controls="{{ include.target }}">
     Toggle Code
   </button>
 </p>
+
+<div class="collapse" id="{{ include.target }}">
+  {{ include.content }}
+</div>

@@ -3,19 +3,48 @@ layout: post
 title: "Assumptions of Statistics Analysis"
 author: "Gaoping Huang"
 use_math: true
+use_bootstrap: true
 ---
 
 A brief summary of the assumptions of statistic methods from the book "Discovering Statistics using R (2012)" by Andy Field. Most text is directly copied from the book chapter. All the credit goes to him.
 
-To test these assumptions with R, see [Summary of Statistics Methods using R][post_using_R].
+To test these assumptions using R, click "Toggle Code" button.
 
 ## Parametric data
 See section 5.3
 ### 1. Normally distributed data
-It means different things in different contexts. See more below.
+It means different things in different contexts. See more details in each analysis.
+
+Shapiro-Wilk test, see section 5.6.
+{% capture code_for_shapiro_test %}
+```{r RExam_shapiro_test1}
+rexam <- read.delim("../assets/Rdata/RExam.dat", header=TRUE)
+shapiro.test(rexam$exam)
+```
+Since p < 0.05, the distribution is not normal.
+
+Now if we’d asked for separate Shapiro–Wilk tests for the two universities, we might have found non-significant results:
+```{r RExam_shapiro_test2}
+rexam$uni<-factor(rexam$uni, levels = c(0:1), labels = c("Duncetown University", "Sussex University"))
+by(rexam$exam, rexam$uni, shapiro.test)
+```
+{% endcapture %}
+{% include toggle_button.html target="collapseShapiroTest" content=code_for_shapiro_test %}
+
 
 ### 2. Homogeneity of variance
 This assumption means that the variances should be the same throughout the data. If you’ve collected groups of data then this means that the variance of your outcome variable or variables should be the same in each of these groups. If you’ve collected continuous data (such as in correlational designs), this assumption means that the variance of one variable should be stable at all levels of the other variable. 
+
+Levene's test, see section 5.7.
+{% capture code_for_levene_test %}
+```{r RExam_levene_test}
+library(car)
+leveneTest(rexam$exam, rexam$uni, center=median)  # center could be mean
+```
+This indicates that the variances are not significantly different (i.e., they are similar and the homogeneity of variance assumption is tenable).
+{% endcapture %}
+{% include toggle_button.html target="collapseLeveneTest" content=code_for_levene_test %}
+
 
 ### 3. Interval data
 Data should be measured at least at the interval level.
@@ -46,6 +75,17 @@ At each level of the predictor variable(s), the variance of the residual terms s
 
 ### 6. Independent errors
 For any two observations the residual terms should be uncorrelated (or independent). 
+
+Durbin–Watson test, see section 7.9.3.
+{% capture code_for_durbin_watson_test %}
+```{r durbin_watson_test}
+album2 <- read.delim("../assets/Rdata/Album Sales 2.dat", header = TRUE)
+albumSales.3 <- lm(sales ~ adverts + airplay + attract, data = album2)
+durbinWatsonTest(albumSales.3)
+```
+> As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
+{% endcapture %}
+{% include toggle_button.html target="collapseDurbinWatsonTest" content=code_for_durbin_watson_test %}
 
 ### 7. Normally distributed errors
 It is assumed that the residuals in the model are random, normally distributed variables with a mean of 0.
@@ -106,6 +146,5 @@ For the chi-square test to be meaningful it is imperative that each person, item
 Although it is acceptable in larger contingency tables to have up to 20% of expected frequencies below 5, the result is a loss of statistical power.
 
 ## Conclusion
-Again, this post is only a brief summary of the assumptions mentioned in the book. Most text is directly copied from the book chapter. All the credit goes to Andy Field. To validate these assumptions using R, see [Summary of Statistics Methods using R][post_using_R].
+Again, this post is only a brief summary of the assumptions mentioned in the book. Most text is directly copied from the book chapter. All the credit goes to Andy Field.
 
-[post_using_R]: /2017/11/01/statistics-methods-using-R

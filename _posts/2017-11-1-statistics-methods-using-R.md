@@ -3,7 +3,7 @@ layout: post
 title: "Summary of Statistics Methods using R"
 author: "Gaoping Huang"
 use_math: true
-use_bootstrap: true
+use_bootstrap: false
 ---
 
 
@@ -53,98 +53,6 @@ A brief summary of common statistic methods using R from the book "Discovering S
   * Updated website: <http://dornsife.usc.edu/labs/rwilcox/software/>
   * `source("http://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v34.txt")`  -- new website
   * `ancova()` and `ancboot()`, see section 11.5
-
-
-## Check assumptions
-See more description about assumptions at [Assumptions of Statistics Analysis](/2017/11/01/assumptions-of-statistics-methods).
-
-### 1. Normality
-Shapiro-Wilk test
-
-{% highlight r %}
-rexam <- read.delim("../assets/Rdata/RExam.dat", header=TRUE)
-shapiro.test(rexam$exam)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## 
-## 	Shapiro-Wilk normality test
-## 
-## data:  rexam$exam
-## W = 0.96131, p-value = 0.004991
-{% endhighlight %}
-Since p < 0.05, the distribution is not normal.
-
-Now if we’d asked for separate Shapiro–Wilk tests for the two universities, we might have found non-significant results:
-
-{% highlight r %}
-rexam$uni<-factor(rexam$uni, levels = c(0:1), labels = c("Duncetown University", "Sussex University"))
-by(rexam$exam, rexam$uni, shapiro.test)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## rexam$uni: Duncetown University
-## 
-## 	Shapiro-Wilk normality test
-## 
-## data:  dd[x, ]
-## W = 0.97217, p-value = 0.2829
-## 
-## -------------------------------------------------------- 
-## rexam$uni: Sussex University
-## 
-## 	Shapiro-Wilk normality test
-## 
-## data:  dd[x, ]
-## W = 0.98371, p-value = 0.7151
-{% endhighlight %}
-
-### 2. Homogeneity of variance
-Levene's test
-
-{% include toggle_button.html target="#collapseLeveneTest" %}
-<div class="collapse" id="collapseLeveneTest">
-
-{% highlight r %}
-library(car)
-leveneTest(rexam$exam, rexam$uni, center=median)  # center could be mean
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Levene's Test for Homogeneity of Variance (center = median)
-##       Df F value Pr(>F)
-## group  1  2.0886 0.1516
-##       98
-{% endhighlight %}
-This indicates that the variances are not significantly different (i.e., they are similar and the homogeneity of variance assumption is tenable).
-</div>
-
-### Dealing with non-normality and unequal variances
-Transforming data, such as log transformation, square root transformation, see section 5.8.2.
-
-### 3. Independence
-In regression, we can test the assumption of indepedent errors using the Durbin–Watson test, see section 7.9.3.
-
-{% highlight r %}
-album2 <- read.delim("../assets/Rdata/Album Sales 2.dat", header = TRUE)
-albumSales.3 <- lm(sales ~ adverts + airplay + attract, data = album2)
-durbinWatsonTest(albumSales.3)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819   0.744
-##  Alternative hypothesis: rho != 0
-{% endhighlight %}
-> As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
 
 
 
