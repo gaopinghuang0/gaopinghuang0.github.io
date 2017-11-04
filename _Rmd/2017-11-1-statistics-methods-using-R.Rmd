@@ -3,6 +3,7 @@ layout: post
 title: "Summary of Statistics Methods using R"
 author: "Gaoping Huang"
 use_math: true
+use_bootstrap: true
 ---
 
 
@@ -27,10 +28,13 @@ A brief summary of common statistic methods using R from the book "Discovering S
 * *ggm* - for partial correlation
     * `pcor()`, partial correlation, see section 6.6.2
     * `pcor.test()`, significance of partial correlation, see section 6.6.2
+* *gmodels* - for chi-square
 * *Hmisc* - for correlation
     * `rcorr()`, for correlation, see section 6.5.3
+* *MASS* - for loglinear analysis
 * *mlogit* - for multinomial logistic regression
 * *multcomp* - for *post hoc* tests
+    * `glht()`
 * *pastecs* - for descriptive statistics
     * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
 * *polycor* - for correlation
@@ -70,11 +74,15 @@ by(rexam$exam, rexam$uni, shapiro.test)
 
 ### 2. Homogeneity of variance
 Levene's test
+
+{% include toggle_button.html target="#collapseLeveneTest" %}
+<div class="collapse" id="collapseLeveneTest">
 ```{r RExam_levene_test}
 library(car)
 leveneTest(rexam$exam, rexam$uni, center=median)  # center could be mean
 ```
 This indicates that the variances are not significantly different (i.e., they are similar and the homogeneity of variance assumption is tenable).
+</div>
 
 ### Dealing with non-normality and unequal variances
 Transforming data, such as log transformation, square root transformation, see section 5.8.2.

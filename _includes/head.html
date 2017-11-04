@@ -10,13 +10,20 @@
   </title>
 
   <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico">
+
+  <!-- load bootstrap css, remember to set use_bootstrap: true; the js is loaded near the end of <body> -->
+  {% if page.use_bootstrap %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  {% endif %}
+  
   <!-- CSS -->
   <link rel="stylesheet" href="{{ site.baseurl }}/styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
 
-  <!-- support math equations -->
+  <!-- support math equations, remember to set use_math: true -->
   <!-- credit: http://haixing-hu.github.io/programming/2013/09/20/how-to-use-mathjax-in-jekyll-generated-github-pages/ -->
   {% if page.use_math %}
     {% include mathjax_support.html %}
   {% endif %}
+
 </head>

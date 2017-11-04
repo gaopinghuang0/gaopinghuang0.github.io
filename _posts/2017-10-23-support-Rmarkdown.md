@@ -168,6 +168,8 @@ See [How to use MathJax in Jekyll generated Github pages](http://haixing-hu.gith
 ```
 Note that I updated the `inlineMath` as `[ ['$','$'] ]` and CDN url to `cndjs`. The config of url remains the same.
 
+Remember to set `use_math: true` in the front matter of any page that needs math equations.
+
 ## Set fig.path for different post
 See [Blogging About R Code with R Markdown, Knitr, and Jekyll](https://nicolewhite.github.io/2015/02/07/r-blogging-with-rmarkdown-knitr-jekyll.html) by Nicole White.
 

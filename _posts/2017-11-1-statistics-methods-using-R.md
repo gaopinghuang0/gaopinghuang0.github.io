@@ -3,6 +3,7 @@ layout: post
 title: "Summary of Statistics Methods using R"
 author: "Gaoping Huang"
 use_math: true
+use_bootstrap: true
 ---
 
 
@@ -27,10 +28,13 @@ A brief summary of common statistic methods using R from the book "Discovering S
 * *ggm* - for partial correlation
     * `pcor()`, partial correlation, see section 6.6.2
     * `pcor.test()`, significance of partial correlation, see section 6.6.2
+* *gmodels* - for chi-square
 * *Hmisc* - for correlation
     * `rcorr()`, for correlation, see section 6.5.3
+* *MASS* - for loglinear analysis
 * *mlogit* - for multinomial logistic regression
 * *multcomp* - for *post hoc* tests
+    * `glht()`
 * *pastecs* - for descriptive statistics
     * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
 * *polycor* - for correlation
@@ -102,6 +106,9 @@ by(rexam$exam, rexam$uni, shapiro.test)
 ### 2. Homogeneity of variance
 Levene's test
 
+{% include toggle_button.html target="#collapseLeveneTest" %}
+<div class="collapse" id="collapseLeveneTest">
+
 {% highlight r %}
 library(car)
 leveneTest(rexam$exam, rexam$uni, center=median)  # center could be mean
@@ -116,6 +123,7 @@ leveneTest(rexam$exam, rexam$uni, center=median)  # center could be mean
 ##       98
 {% endhighlight %}
 This indicates that the variances are not significantly different (i.e., they are similar and the homogeneity of variance assumption is tenable).
+</div>
 
 ### Dealing with non-normality and unequal variances
 Transforming data, such as log transformation, square root transformation, see section 5.8.2.
@@ -133,7 +141,7 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819   0.768
+##    1       0.0026951      1.949819   0.744
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).

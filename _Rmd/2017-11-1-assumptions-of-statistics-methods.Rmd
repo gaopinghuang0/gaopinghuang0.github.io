@@ -97,7 +97,7 @@ Sphericity refers to the equality of variances of the *differences* between trea
 
 $$Variance_{A–B} ≈ Variance_{A–C} ≈ Variance_{B–C}$$
 
-## Categorical data, chi-square test
+## Categorical data, chi-square test, loglinear analysis
 
 ### 1. Independence of data
 For the chi-square test to be meaningful it is imperative that each person, item or entity contributes to only one cell of the contingency table. Therefore, you cannot use a chi-square test on a repeated-measures design.
