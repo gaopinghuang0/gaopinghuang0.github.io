@@ -10,16 +10,16 @@ To test these assumptions with R, see [Summary of Statistics Methods using R](/2
 
 ## Parametric data
 ### 1. Normally distributed data
-It means different things in different contexts.
+It means different things in different contexts. See more below.
 
 ### 2. Homogeneity of variance
-This assumption means that the variances should be the same throughout the data.
+This assumption means that the variances should be the same throughout the data. If you’ve collected groups of data then this means that the variance of your outcome variable or variables should be the same in each of these groups. If you’ve collected continuous data (such as in correlational designs), this assumption means that the variance of one variable should be stable at all levels of the other variable. 
 
 ### 3. Interval data
 Data should be measured at least at the interval level.
 
 ### 4. Independence
-This assumption, like that of normality, is different depending on the test you’re using.
+This assumption, like that of normality, is different depending on the test you’re using. See more below.
 
 
 

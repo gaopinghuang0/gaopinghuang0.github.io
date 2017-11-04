@@ -10,38 +10,78 @@ A brief summary of common statistic methods using R from the book "Discovering S
 
 
 ## Useful packages
-* *stats* - built-in, auto-loaded,
-    * `wilcox.test()`
+* *boot* - for bootstrap
+    * `boot()`, see section 6.5.7, such as `boot_kendall<-boot(liarData, bootTau, 2000)`
+    * `boot.ci()`, confidence interval, such as `boot.ci(boot_kendall, conf=0.99)`, see section 6.5.7
 * *car* - for Levene's test, Type III sums of squares
     * `leveneTest()`, such as `leveneTest(viagraData$libido, viagraData$dose, center = median)`
     * `Anova()`, such as `Anova(modelName, type="III")`, see section 11.4.7
-* *pastecs* - for descriptive statistics
-    * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
-* *multcomp* - for *post hoc* tests
-* *ez* - for *ANOVA*
 * *compute.es* - for effect sizes
     * `mes()`, see section 11.6, calculate effect sizes between all combinations of groups
 * *effects* - for adjusted means
     * `effect()`, see section 11.4.8
+* *ez* - for *ANOVA*
 * *ggplot2* - for graphs
+* *ggm* - for partial correlation
+    * `pcor()`, partial correlation, see section 6.6.2
+    * `pcor.test()`, significance of partial correlation, see section 6.6.2
+* *Hmisc* - for correlation
+    * `rcorr()`, for correlation, see section 6.5.3
+* *multcomp* - for *post hoc* tests
+* *pastecs* - for descriptive statistics
+    * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
+* *polycor* - for correlation
+    * `polyserial()`, biserial correlation, see section 6.5.8
+* *psych* -
+    * `describe()` - such as `describe(dlf$day1)`, similar to `stat.desc()` above.
+* *stats* - built-in, auto-loaded
+    * `wilcox.test()`
+    * `shapiro.test()`, Shapiro-Wilk test, such as `shapiro.test(variable)`
+    * `cor()`, for correlation
+    * `cor.test()`, for correlation
 * *WRS* - for robust tests, see section 5.8.4
+  * Updated website: [http://dornsife.usc.edu/labs/rwilcox/software/]
+  * `source("http://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v34.txt")`  -- new website
   * `ancova()` and `ancboot()`, see section 11.5
 
+
 ## Check assumptions
+See more description about assumptions at [Assumptions of Statistics Analysis](/2017/11/01/assumptions-of-statistics-methods).
+
 ### 1. Normality
 Shapiro-Wilk test
+```{r RExam_shapiro_test1}
+setwd("../assets/Rdata")
+rexam <- read.delim("RExam.dat", header=TRUE)
+shapiro.test(rexam$exam)
+```
+Since p < 0.05, the distribution is not normal.
+
+Now if we’d asked for separate Shapiro–Wilk tests for the two universities, we might have found non-significant results:
+```{r RExam_shapiro_test2}
+rexam$uni<-factor(rexam$uni, levels = c(0:1), labels = c("Duncetown University", "Sussex University"))
+by(rexam$exam, rexam$uni, shapiro.test)
+```
 
 ### 2. Homogeneity of variance
-
 Levene's test
+```{r RExam_levene_test}
+library(car)
+leveneTest(rexam$exam, rexam$uni, center=median)  # center could be mean
+```
+This indicates that the variances are not significantly different (i.e., they are similar and the homogeneity of variance assumption is tenable).
+
+### Dealing with non-normality and unequal variances
+Transforming data, such as log transformation, square root transformation, see section 5.8.2.
+
 
 ## Effect size
 
-* Eta squared $(\eta^2)$, see chapter 10
+* Eta squared ($\eta^2$), see chapter 10
 
-* Partial eta squared (*partial* $\eta^2$ ), see section 11.6
+* Partial eta squared (*partial* $\eta^2$), see section 11.6
 
-* Omega squared $(\omega^2)$, see section 10.7.
+* Omega squared ($\omega^2$), see section 10.7.
 This measure computes the overall effect size. It can be calculated only when we have equal numbers of participants in each group. If it's not the case, then use `rcontrast()` below.
 
 * `rcontrast(t, df)`, see section 10.7 and 11.6.
@@ -57,24 +97,3 @@ rcontrast<-function(t, df)
 * `mes()`, see section 11.6.
 This method calculates effect sizes between all combinations of groups
 
-
-<!-- ## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
- -->
