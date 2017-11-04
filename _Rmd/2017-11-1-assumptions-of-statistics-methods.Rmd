@@ -108,6 +108,18 @@ durbinWatsonTest(albumSales.3)
 ### 7. Normally distributed errors
 It is assumed that the residuals in the model are random, normally distributed variables with a mean of 0.
 
+If we wanted to produce high-quality graphs for publication we would use *ggplot2()*. However, if we’re just looking at these graphs to check our assumptions, we’ll use the simpler (but not as nice) `plot()` and `hist()` functions.
+{% include toggle_button.html target="collapseResidualTest" %}
+<div markdown="1" class="collapse" id="collapseResidualTest">
+```{r residual_test_using_plot, fig.width=5, out.width="50%", out.extra='style="float:left"'}
+plot(albumSales.3)
+```
+<div style="clear: both;"></div>
+```{r residual_test_using_hist, fig.width=5, fig.align="center"}
+hist(rstudent(albumSales.3))
+```
+</div>
+
 ### 8. Independence
 It is assumed that all of the values of the outcome variable are independent (in other words, each value of the outcome variable comes from a separate entity).
 
