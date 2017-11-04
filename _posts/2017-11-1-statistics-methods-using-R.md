@@ -16,6 +16,7 @@ A brief summary of common statistic methods using R from the book "Discovering S
 * *car* - for Levene's test, Type III sums of squares, and more
     * `leveneTest()`, such as `leveneTest(viagraData$libido, viagraData$dose, center = median)`
     * `Anova()`, such as `Anova(modelName, type="III")`, see section 11.4.7
+    * `durbinWatsonTest()` or `dwt()`, Durbin–Watson test for assumption of independent errors, see section 7.9.3
 * *compute.es* - for effect sizes
     * `mes()`, see section 11.6, calculate effect sizes between all combinations of groups
 * *effects* - for adjusted means
@@ -44,7 +45,7 @@ A brief summary of common statistic methods using R from the book "Discovering S
     * `anova()`, compare models, see section 7.8.4.2; which is different from `Anova()` from *car* package
     * `confint()`, computes confidence interval
 * *WRS* - for robust tests, see section 5.8.4
-  * Updated website: [http://dornsife.usc.edu/labs/rwilcox/software/]
+  * Updated website: <http://dornsife.usc.edu/labs/rwilcox/software/>
   * `source("http://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v34.txt")`  -- new website
   * `ancova()` and `ancboot()`, see section 11.5
 
@@ -56,8 +57,7 @@ See more description about assumptions at [Assumptions of Statistics Analysis](/
 Shapiro-Wilk test
 
 {% highlight r %}
-setwd("../assets/Rdata")
-rexam <- read.delim("RExam.dat", header=TRUE)
+rexam <- read.delim("../assets/Rdata/RExam.dat", header=TRUE)
 shapiro.test(rexam$exam)
 {% endhighlight %}
 
@@ -120,7 +120,23 @@ This indicates that the variances are not significantly different (i.e., they ar
 Transforming data, such as log transformation, square root transformation, see section 5.8.2.
 
 ### 3. Independence
-In regression, indepen errors
+In regression, we can test the assumption of indepedent errors using the Durbin–Watson test, see section 7.9.3.
+
+{% highlight r %}
+album2 <- read.delim("../assets/Rdata/Album Sales 2.dat", header = TRUE)
+albumSales.3 <- lm(sales ~ adverts + airplay + attract, data = album2)
+durbinWatsonTest(albumSales.3)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##  lag Autocorrelation D-W Statistic p-value
+##    1       0.0026951      1.949819    0.74
+##  Alternative hypothesis: rho != 0
+{% endhighlight %}
+> As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
+
 
 
 ## Effect size
