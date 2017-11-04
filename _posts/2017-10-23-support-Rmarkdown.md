@@ -166,7 +166,7 @@ See [How to use MathJax in Jekyll generated Github pages](http://haixing-hu.gith
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 ```
-Note that I updated the `inlineMath` as `[ ['$','$'] ]` and CDN url to `cndjs`. The config remains the same.
+Note that I updated the `inlineMath` as `[ ['$','$'] ]` and CDN url to `cndjs`. The config of url remains the same.
 
 ## Set fig.path for different post
 See [Blogging About R Code with R Markdown, Knitr, and Jekyll](https://nicolewhite.github.io/2015/02/07/r-blogging-with-rmarkdown-knitr-jekyll.html) by Nicole White.

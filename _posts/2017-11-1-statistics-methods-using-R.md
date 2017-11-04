@@ -22,6 +22,7 @@ A brief summary of common statistic methods using R from the book "Discovering S
 * *effects* - for adjusted means
     * `effect()`, see section 11.4.8
 * *ez* - for *ANOVA*
+    * `ezANOVA()`, repeated-measures ANOVA, see section 12.4.7
 * *ggplot2* - for graphs
 * *ggm* - for partial correlation
     * `pcor()`, partial correlation, see section 6.6.2
@@ -132,7 +133,7 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819    0.74
+##    1       0.0026951      1.949819   0.768
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).

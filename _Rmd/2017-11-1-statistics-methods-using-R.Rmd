@@ -22,6 +22,7 @@ A brief summary of common statistic methods using R from the book "Discovering S
 * *effects* - for adjusted means
     * `effect()`, see section 11.4.8
 * *ez* - for *ANOVA*
+    * `ezANOVA()`, repeated-measures ANOVA, see section 12.4.7
 * *ggplot2* - for graphs
 * *ggm* - for partial correlation
     * `pcor()`, partial correlation, see section 6.6.2
