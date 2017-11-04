@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Credit: adapted from https://chepec.se/2014/07/16/knitr-jekyll
 # Program:
 #   Program converts a specific R Markdown file into Markdown file 

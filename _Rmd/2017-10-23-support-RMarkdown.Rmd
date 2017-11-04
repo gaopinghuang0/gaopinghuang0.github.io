@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Supporting R Markdown with Jekyll and knitr"
+title: "Supporting R Markdown with Jekyll, knitr, and MathJax"
 author: "Gaoping"
 ---
 
@@ -136,7 +136,7 @@ To achieve this, I'm using a command called [when-changed](https://github.com/jo
 pip install https://github.com/joh/when-changed/archive/master.zip
 
 # Usage: when-changed FILE -c COMMAND (watch FILE changes and exec COMMAND) 
-when-changed _RMD/some-rmd-file.Rmd -c bash convert_rmd.sh _RMD/some-rmd-file.Rmd
+when-changed _Rmd/<filename>.rmd -c bash convert_rmd.sh _Rmd/<filename>.rmd
 
 # assume that Jekyll is also running in a different tab
 jekyll serve
@@ -194,7 +194,7 @@ df
 #### `ggplot2` plot
 Ggplot2 plots work well:
 
-```{r ggplot2ex}
+```{r ggplot2example}
 qplot(x, y, data=df)
 ```
 

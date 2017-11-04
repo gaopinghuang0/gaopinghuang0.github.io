@@ -5,7 +5,10 @@ Blog address: <https://gaopinghuang0.github.io>
 
 Draft blog posts are put under `_drafts/*.md` or `_Rmd/*.Rmd` (R Markdown). To auto-convert R Markdown files into `_posts/*.md`, run:
 ```bash
-when-changed _RMD/some-rmd-file.Rmd -c bash convert_rmd.sh _RMD/some-rmd-file.Rmd
+when-changed _Rmd/<filename>.rmd -c bash convert_rmd.sh _Rmd/<filename>.rmd
+
+# or use a helper script
+./auto_convert_rmd_on_change.sh _Rmd/<filename>.rmd
 ```
 
 

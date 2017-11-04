@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Supporting R Markdown with Jekyll and knitr"
+title: "Supporting R Markdown with Jekyll, knitr, and MathJax"
 author: "Gaoping"
 ---
 
@@ -136,7 +136,7 @@ To achieve this, I'm using a command called [when-changed](https://github.com/jo
 pip install https://github.com/joh/when-changed/archive/master.zip
 
 # Usage: when-changed FILE -c COMMAND (watch FILE changes and exec COMMAND) 
-when-changed _RMD/some-rmd-file.Rmd -c bash convert_rmd.sh _RMD/some-rmd-file.Rmd
+when-changed _Rmd/<filename>.rmd -c bash convert_rmd.sh _Rmd/<filename>.rmd
 
 # assume that Jekyll is also running in a different tab
 jekyll serve
@@ -145,6 +145,28 @@ In such case, an R Markdown file will be automatically converted to `_posts/*.md
 
 ## Support math equations
 See [How to use MathJax in Jekyll generated Github pages](http://haixing-hu.github.io/programming/2013/09/20/how-to-use-mathjax-in-jekyll-generated-github-pages/) by Haixing Hu.
+
+```html
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      // inlineMath: [ ['$','$'], ['\(', '\)'] ],
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+```
+Note that I updated the `inlineMath` as `[ ['$','$'] ]` and CDN url to `cndjs`. The config remains the same.
 
 ## Set fig.path for different post
 See [Blogging About R Code with R Markdown, Knitr, and Jekyll](https://nicolewhite.github.io/2015/02/07/r-blogging-with-rmarkdown-knitr-jekyll.html) by Nicole White.
@@ -195,5 +217,5 @@ Ggplot2 plots work well:
 qplot(x, y, data=df)
 {% endhighlight %}
 
-![plot of chunk ggplot2ex](/assets/Rfig/ggplot2ex-1.svg)
+![plot of chunk ggplot2example](/assets/Rfig/ggplot2example-1.svg)
 
