@@ -16,7 +16,8 @@ See section 5.3
 It means different things in different contexts. See more details in each analysis.
 
 Shapiro-Wilk test, see section 5.6.
-{% capture code_for_shapiro_test %}
+{% include toggle_button.html target="collapseShapiroTest" %}
+<div markdown="1" class="collapse" id="collapseShapiroTest">
 
 {% highlight r %}
 rexam <- read.delim("../assets/Rdata/RExam.dat", header=TRUE)
@@ -59,15 +60,14 @@ by(rexam$exam, rexam$uni, shapiro.test)
 ## data:  dd[x, ]
 ## W = 0.98371, p-value = 0.7151
 {% endhighlight %}
-{% endcapture %}
-{% include toggle_button.html target="collapseShapiroTest" content=code_for_shapiro_test %}
-
+</div>
 
 ### 2. Homogeneity of variance
 This assumption means that the variances should be the same throughout the data. If you’ve collected groups of data then this means that the variance of your outcome variable or variables should be the same in each of these groups. If you’ve collected continuous data (such as in correlational designs), this assumption means that the variance of one variable should be stable at all levels of the other variable. 
 
 Levene's test, see section 5.7.
-{% capture code_for_levene_test %}
+{% include toggle_button.html target="collapseLeveneTest" %}
+<div markdown="1" class="collapse" id="collapseLeveneTest">
 
 {% highlight r %}
 library(car)
@@ -83,8 +83,7 @@ leveneTest(rexam$exam, rexam$uni, center=median)  # center could be mean
 ##       98
 {% endhighlight %}
 This indicates that the variances are not significantly different (i.e., they are similar and the homogeneity of variance assumption is tenable).
-{% endcapture %}
-{% include toggle_button.html target="collapseLeveneTest" content=code_for_levene_test %}
+</div>
 
 
 ### 3. Interval data
@@ -108,6 +107,56 @@ The predictors should have some variation in value (i.e., they do not have varia
 ### 3. No perfect multicollinearity
 There should be no perfect linear relationship between two or more of the predictors. So, the predictor variables should not correlate too highly (see section 7.7.2.4).
 
+The VIF and tolerance statistics (with tolerance being 1 divided by the VIF) are useful statistics to assess collinearity, see section 7.9.4.
+
+{% include toggle_button.html target="collapseVIFTest" %}
+<div markdown="1" class="collapse" id="collapseVIFTest">
+
+{% highlight r %}
+album2 <- read.delim("../assets/Rdata/Album Sales 2.dat", header = TRUE)
+albumSales.3 <- lm(sales ~ adverts + airplay + attract, data = album2)
+vif(albumSales.3)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##  adverts  airplay  attract 
+## 1.014593 1.042504 1.038455
+{% endhighlight %}
+
+
+
+{% highlight r %}
+1/vif(albumSales.3)  # tolerance
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##   adverts   airplay   attract 
+## 0.9856172 0.9592287 0.9629695
+{% endhighlight %}
+
+
+
+{% highlight r %}
+mean(vif(albumSales.3))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## [1] 1.03185
+{% endhighlight %}
+* If the largest VIF is greater than 10 then there is cause for concern (Bowerman & O’Connell, 1990; Myers, 1990).
+* If the average VIF is substantially greater than 1 then the regression may be biased (Bowerman & O’Connell, 1990).
+* Tolerance below 0.1 indicates a serious problem.
+* Tolerance below 0.2 indicates a potential problem (Menard, 1995).
+
+For our current model the VIF values are all well below 10 and the tolerance statistics all well above 0.2. Also, the average VIF is very close to 1. Based on these measures we can safely conclude that there is no collinearity within our data.
+</div>
+
 ### 4. Predictors are uncorrelated with ‘external variables’
 External variables are variables that haven’t been included in the regression model which influence the outcome variable.
 
@@ -118,11 +167,11 @@ At each level of the predictor variable(s), the variance of the residual terms s
 For any two observations the residual terms should be uncorrelated (or independent). 
 
 Durbin–Watson test, see section 7.9.3.
-{% capture code_for_durbin_watson_test %}
+{% include toggle_button.html target="collapseDurbinWatsonTest" %}
+<div markdown="1" class="collapse" id="collapseDurbinWatsonTest">
 
 {% highlight r %}
-album2 <- read.delim("../assets/Rdata/Album Sales 2.dat", header = TRUE)
-albumSales.3 <- lm(sales ~ adverts + airplay + attract, data = album2)
+# albumSales.3 is calculated above
 durbinWatsonTest(albumSales.3)
 {% endhighlight %}
 
@@ -130,12 +179,12 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819   0.756
+##    1       0.0026951      1.949819   0.748
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
-{% endcapture %}
-{% include toggle_button.html target="collapseDurbinWatsonTest" content=code_for_durbin_watson_test %}
+
+</div>
 
 ### 7. Normally distributed errors
 It is assumed that the residuals in the model are random, normally distributed variables with a mean of 0.
