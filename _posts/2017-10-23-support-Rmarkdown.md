@@ -4,6 +4,8 @@ title: "Supporting R Markdown with Jekyll, knitr, and MathJax"
 author: "Gaoping"
 ---
 
+
+
 Blogging with Jekyll and Markdown is good. Blogging with Jekyll and R Markdown is even better.
 
 Based on the following two posts, I figured out how to support R Markdown using knitr. The basic idea is to use knitr to convert R Markdown files to Jekyll friendly markdown files.
@@ -168,10 +170,12 @@ See [How to use MathJax in Jekyll generated Github pages](http://haixing-hu.gith
 ```
 Note that I updated the `inlineMath` as `[ ['$','$'] ]` and CDN url to `cndjs`. The config of url remains the same.
 
-Remember to set `use_math: true` in the front matter of any page that needs math equations.
-
 ## Set fig.path for different post
-See [Blogging About R Code with R Markdown, Knitr, and Jekyll](https://nicolewhite.github.io/2015/02/07/r-blogging-with-rmarkdown-knitr-jekyll.html) by Nicole White.
+See [Blogging About R Code with R Markdown, Knitr, and Jekyll](https://nicolewhite.github.io/2015/02/07/r-blogging-with-rmarkdown-knitr-jekyll.html) by Nicole White. For example, put the following code at the beginning of each post:
+
+{% highlight r %}
+knitr::opts_chunk$set(fig.path='assets/Rfig/support-rmarkdown-')
+{% endhighlight %}
 
 ## Sample output
 Below shows a sample output, such as basic console and ggplot2, copied from [example-r-markdown.rmd](https://gist.github.com/jeromyanglim/2716336).
@@ -219,5 +223,5 @@ Ggplot2 plots work well:
 qplot(x, y, data=df)
 {% endhighlight %}
 
-![plot of chunk ggplot2example](/assets/Rfig/ggplot2example-1.svg)
+![plot of chunk ggplot2example](/assets/Rfig/support-rmarkdown-ggplot2example-1.svg)
 

@@ -6,6 +6,8 @@ use_math: true
 use_bootstrap: true
 ---
 
+
+
 A brief summary of the assumptions of statistic methods from the book "Discovering Statistics using R (2012)" by Andy Field. Most text is directly copied from the book chapter. All the credit goes to him.
 
 To test these assumptions using R, click "Toggle Code" button.
@@ -179,7 +181,7 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819     0.7
+##    1       0.0026951      1.949819   0.696
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
@@ -197,14 +199,14 @@ If we wanted to produce high-quality graphs for publication we would use *ggplot
 plot(albumSales.3)
 {% endhighlight %}
 
-<img src="/assets/Rfig/residual_test_using_plot-1.svg" title="plot of chunk residual_test_using_plot" alt="plot of chunk residual_test_using_plot" width="50%" style="float:left" /><img src="/assets/Rfig/residual_test_using_plot-2.svg" title="plot of chunk residual_test_using_plot" alt="plot of chunk residual_test_using_plot" width="50%" style="float:left" /><img src="/assets/Rfig/residual_test_using_plot-3.svg" title="plot of chunk residual_test_using_plot" alt="plot of chunk residual_test_using_plot" width="50%" style="float:left" /><img src="/assets/Rfig/residual_test_using_plot-4.svg" title="plot of chunk residual_test_using_plot" alt="plot of chunk residual_test_using_plot" width="50%" style="float:left" />
+<img src="/assets/Rfig/assumption-of-statistics-residual_by_plot-1.svg" title="plot of chunk residual_by_plot" alt="plot of chunk residual_by_plot" width="50%" style="float:left" /><img src="/assets/Rfig/assumption-of-statistics-residual_by_plot-2.svg" title="plot of chunk residual_by_plot" alt="plot of chunk residual_by_plot" width="50%" style="float:left" /><img src="/assets/Rfig/assumption-of-statistics-residual_by_plot-3.svg" title="plot of chunk residual_by_plot" alt="plot of chunk residual_by_plot" width="50%" style="float:left" /><img src="/assets/Rfig/assumption-of-statistics-residual_by_plot-4.svg" title="plot of chunk residual_by_plot" alt="plot of chunk residual_by_plot" width="50%" style="float:left" />
 <div style="clear: both;"></div>
 
 {% highlight r %}
 hist(rstudent(albumSales.3))
 {% endhighlight %}
 
-<img src="/assets/Rfig/residual_test_using_hist-1.svg" title="plot of chunk residual_test_using_hist" alt="plot of chunk residual_test_using_hist" style="display: block; margin: auto;" />
+<img src="/assets/Rfig/assumption-of-statistics-residual_by_hist-1.svg" title="plot of chunk residual_by_hist" alt="plot of chunk residual_by_hist" style="display: block; margin: auto;" />
 </div>
 
 ### 8. Independence

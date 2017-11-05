@@ -6,6 +6,10 @@ use_math: true
 use_bootstrap: true
 ---
 
+```{r, echo=FALSE}
+knitr::opts_chunk$set(fig.path='assets/Rfig/assumption-of-statistics-')
+```
+
 A brief summary of the assumptions of statistic methods from the book "Discovering Statistics using R (2012)" by Andy Field. Most text is directly copied from the book chapter. All the credit goes to him.
 
 To test these assumptions using R, click "Toggle Code" button.
@@ -111,11 +115,11 @@ It is assumed that the residuals in the model are random, normally distributed v
 If we wanted to produce high-quality graphs for publication we would use *ggplot2()*. However, if we’re just looking at these graphs to check our assumptions, we’ll use the simpler (but not as nice) `plot()` and `hist()` functions.
 {% include toggle_button.html target="collapseResidualTest" %}
 <div markdown="1" class="collapse" id="collapseResidualTest">
-```{r residual_test_using_plot, fig.width=5, out.width="50%", out.extra='style="float:left"'}
+```{r residual_by_plot, fig.width=5, out.width="50%", out.extra='style="float:left"'}
 plot(albumSales.3)
 ```
 <div style="clear: both;"></div>
-```{r residual_test_using_hist, fig.width=5, fig.align="center"}
+```{r residual_by_hist, fig.width=5, fig.align="center"}
 hist(rstudent(albumSales.3))
 ```
 </div>

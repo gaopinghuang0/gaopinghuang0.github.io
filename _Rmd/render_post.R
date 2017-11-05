@@ -8,13 +8,16 @@ KnitPost <- function(site.path='/pathToYourBlog/', overwriteAll=F, overwriteOne=
   ## Blog-specific directories.  This will depend on how you organize your blog.
   site.path <- site.path # directory of jekyll blog (including trailing slash)
   rmd.path <- paste0(site.path, "_Rmd") # directory where your Rmd-files reside (relative to base)
-  fig.dir <- "assets/Rfig/" # directory to save figures
+  # hgp: set fig.path in each post to add prefix, not a global one here.
+  # fig.dir <- "assets/Rfig/" # directory to save figures
   posts.path <- paste0(site.path, "_posts") # directory for converted markdown files
   cache.path <- paste0(site.path, "_cache") # necessary for plots
   
   render_jekyll(highlight = "pygments")
   opts_knit$set(base.url = '/', base.dir = site.path)
-  opts_chunk$set(fig.path=fig.dir, fig.width=8.5, fig.height=5.25, dev='svg', cache=F, 
+  # hgp: do not set fig.path here
+  # opts_chunk$set(fig.path=fig.dir, fig.width=8.5, fig.height=5.25, dev='svg', cache=F, 
+  opts_chunk$set(fig.width=8.5, fig.height=5.25, dev='svg', cache=F, 
                  warning=F, message=F, cache.path=cache.path, tidy=F)   
   
   # setwd(rmd.path) # setwd to base
