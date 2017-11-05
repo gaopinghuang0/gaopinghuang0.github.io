@@ -29,12 +29,13 @@ A brief summary of common statistic methods using R from the book "Discovering S
     * `pcor()`, partial correlation, see section 6.6.2
     * `pcor.test()`, significance of partial correlation, see section 6.6.2
 * *gmodels* - for chi-square
+    * `CrossTable()`, see section 18.6.4.
 * *Hmisc* - for correlation
     * `rcorr()`, for correlation, see section 6.5.3
 * *MASS* - for loglinear analysis
 * *mlogit* - for multinomial logistic regression
 * *multcomp* - for *post hoc* tests
-    * `glht()`
+    * `glht()`, see section 11.4.11.
 * *pastecs* - for descriptive statistics
     * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
 * *polycor* - for correlation

@@ -181,7 +181,7 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819   0.696
+##    1       0.0026951      1.949819   0.738
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
@@ -192,6 +192,7 @@ durbinWatsonTest(albumSales.3)
 It is assumed that the residuals in the model are random, normally distributed variables with a mean of 0.
 
 If we wanted to produce high-quality graphs for publication we would use *ggplot2()*. However, if we’re just looking at these graphs to check our assumptions, we’ll use the simpler (but not as nice) `plot()` and `hist()` functions.
+
 {% include toggle_button.html target="collapseResidualTest" %}
 <div markdown="1" class="collapse" id="collapseResidualTest">
 
@@ -220,13 +221,19 @@ The mean values of the outcome variable for each increment of the predictor(s) l
 See section 8.4. Logistic regression shares some of the assumptions of normal regression: 1) Linearity, 2) Independent errors, and 3) Multicollinearity.
 
 ## Comparing two means, t-test
-Both independent t-test and the dependent t-test are *parametric tests* mentioned above. The independent t-test, because it is used to test different groups of people, also assumes:
-### 1. Independence
+Both independent t-test and the dependent t-test are *parametric tests* mentioned above. See section 9.4.3.
+1. The sampling distribution is normally distributed.
+In the dependent t-test this means that the sampling distribution of the *differences* between scores should be normal, not the scores themselves (see section 9.6.3.4).
+2. Data are measured at least at the interval level.
+
+The independent t-test, because it is used to test different groups of people, also assumes:
+1. Independence. 
 Scores in different treatment conditions are independent (because they come from different people).
-### 2. Homogeneity of variance
+2. Homogeneity of variance.
 Well, at least in theory we assume equal variances, but in reality we don’t (Jane Superbrain Box 9.2).
 
 ## ANOVA
+The assumptions of *parametric test* also apply here.
 ### 1. Homogeneity of variance
 ### 2. Normality
 In terms of normality, what matters is that distributions *within groups* are normally distributed.
@@ -241,10 +248,62 @@ In terms of normality, what matters is that distributions *within groups* are no
 ### 1. Independence of the covariate and treatment effect
 For example, anxiety and depression are closely correlated (anxious people tend to be depressed) so if you wanted to compare an anxious group of people against a non-anxious group on some task, the chances are that the anxious group would also be more depressed than the non-anxious group. You might think that by adding depression as a covariate into the analysis you can look at the ‘pure’ effect of anxiety, but you can’t.
 
+We can run an ANOVA to test whether the covariate variable and treatment variable are independent or not. See section 11.4.6.
+
+{% include toggle_button.html target="collapseANCOVATest1" %}
+<div markdown="1" class="collapse" id="collapseANCOVATest1">
+
+{% highlight r %}
+viagraData <- read.delim("../assets/Rdata/ViagraCovariate.dat", header = TRUE)
+viagraData$dose <- factor(viagraData$dose, levels = c(1:3),
+    labels = c("Placebo", "Low Dose", "High Dose"))
+viagraModel <- aov(partnerLibido ~ dose, data=viagraData)
+summary(viagraModel)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##             Df Sum Sq Mean Sq F value Pr(>F)
+## dose         2  12.77   6.385   1.979  0.158
+## Residuals   27  87.10   3.226
+{% endhighlight %}
+The means for partner’s libido are not significantly different in the placebo, low- and high-dose groups. This result means that it is appropriate to use partner’s libido as a covariate in the analysis.
+</div>
+
+
 ### 2. Homogeneity of regression slopes
 For example, if there’s a positive relationship between the covariate and the outcome in one group, we assume that there is a positive relationship in all of the other groups too.
 
 If you have violated the assumption of homogeneity of regression slopes, or if the variability in regression slopes is an interesting hypothesis in itself, then you can explicitly model this variation using multilevel linear models (see Chapter 19).
+
+To test the assumption of homogeneity of regression slopes we need to run the ANCOVA again, but include the interaction between the covariate and predictor variable. See section 11.4.14.
+
+{% include toggle_button.html target="collapseANCOVATest2" %}
+<div markdown="1" class="collapse" id="collapseANCOVATest2">
+
+{% highlight r %}
+hoRS <- aov(libido ~ partnerLibido*dose, data = viagraData)
+Anova(hoRS, type="III")  # from car package
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Anova Table (Type III tests)
+## 
+## Response: libido
+##                    Sum Sq Df F value   Pr(>F)   
+## (Intercept)         0.771  1  0.3157 0.579405   
+## partnerLibido      19.922  1  8.1565 0.008715 **
+## dose               36.558  2  7.4836 0.002980 **
+## partnerLibido:dose 20.427  2  4.1815 0.027667 * 
+## Residuals          58.621 24                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+{% endhighlight %}
+The main thing in which we’re interested is the interaction term, so look at the significance value of the covariate by outcome interaction ( **partnerLibido:dose** ), if this effect is significant then the assumption of homogeneity of regression slopes has been broken.
+</div>
 
 
 ## Repeated-measures design
@@ -256,6 +315,43 @@ Sphericity refers to the equality of variances of the *differences* between trea
 
 $$Variance_{A–B} ≈ Variance_{A–C} ≈ Variance_{B–C}$$
 
+Mauchly’s test, see section 13.4.7.1.
+{% include toggle_button.html target="collapseMauchlyTest" %}
+<div markdown="1" class="collapse" id="collapseMauchlyTest">
+
+{% highlight r %}
+Participant<-gl(8, 4, labels = c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8" ))
+Animal<-gl(4, 1, 32, labels = c("Stick Insect", "Kangaroo Testicle", "Fish Eye", "Witchetty Grub"))
+Retch<-c(8, 7, 1, 6, 9, 5, 2, 5, 6, 2, 3, 8, 5, 3, 1, 9, 8, 4, 5, 8, 7, 5, 6, 7, 10, 2, 7, 2, 12, 6, 8, 1)
+longBush<-data.frame(Participant, Animal, Retch)
+
+library(ez)
+bushModel<-ezANOVA(data = longBush, dv = .(Retch), wid = .(Participant), within = .(Animal), detailed = TRUE, type = 3)
+bushModel
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## $ANOVA
+##        Effect DFn DFd     SSn     SSd          F            p p<.05
+## 1 (Intercept)   1   7 990.125  17.375 398.899281 1.973536e-07     *
+## 2      Animal   3  21  83.125 153.375   3.793806 2.557030e-02     *
+##         ges
+## 1 0.8529127
+## 2 0.3274249
+## 
+## $`Mauchly's Test for Sphericity`
+##   Effect        W          p p<.05
+## 2 Animal 0.136248 0.04684581     *
+## 
+## $`Sphericity Corrections`
+##   Effect       GGe      p[GG] p[GG]<.05       HFe      p[HF] p[HF]<.05
+## 2 Animal 0.5328456 0.06258412           0.6657636 0.04833061         *
+{% endhighlight %}
+The important column is the one containing the significance value (p) and in this case the value, .047, is less than the critical value of .05 (which is why there is an asterisk next to the p-value), so we reject the assumption that the variances of the differences between levels are equal. In other words, the assumption of sphericity has been violated, W = 0.14, p = .047. 
+</div>
+
 ## Categorical data, chi-square test, loglinear analysis
 
 ### 1. Independence of data
@@ -263,6 +359,93 @@ For the chi-square test to be meaningful it is imperative that each person, item
 
 ### 2. The expected frequencies should be greater than 5.
 Although it is acceptable in larger contingency tables to have up to 20% of expected frequencies below 5, the result is a loss of statistical power.
+
+Use `CrossTable()` from *gmodels* package, see section 18.6.4.
+
+{% include toggle_button.html target="collapseCrossTable" %}
+<div markdown="1" class="collapse" id="collapseCrossTable">
+
+{% highlight r %}
+catsData<-read.delim("../assets/Rdata/cats.dat", header = TRUE)
+
+library(gmodels)
+CrossTable(catsData$Training, catsData$Dance, fisher = TRUE, chisq = TRUE, 
+  expected = TRUE, prop.c = FALSE, prop.t = FALSE, 
+  prop.chisq = FALSE,  sresid = TRUE, format = "SPSS")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## 
+##    Cell Contents
+## |-------------------------|
+## |                   Count |
+## |         Expected Values |
+## |             Row Percent |
+## |            Std Residual |
+## |-------------------------|
+## 
+## Total Observations in Table:  200 
+## 
+##                     | catsData$Dance 
+##   catsData$Training |       No  |      Yes  | Row Total | 
+## --------------------|-----------|-----------|-----------|
+## Affection as Reward |      114  |       48  |      162  | 
+##                     |  100.440  |   61.560  |           | 
+##                     |   70.370% |   29.630% |   81.000% | 
+##                     |    1.353  |   -1.728  |           | 
+## --------------------|-----------|-----------|-----------|
+##      Food as Reward |       10  |       28  |       38  | 
+##                     |   23.560  |   14.440  |           | 
+##                     |   26.316% |   73.684% |   19.000% | 
+##                     |   -2.794  |    3.568  |           | 
+## --------------------|-----------|-----------|-----------|
+##        Column Total |      124  |       76  |      200  | 
+## --------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson's Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  25.35569     d.f. =  1     p =  4.767434e-07 
+## 
+## Pearson's Chi-squared test with Yates' continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  23.52028     d.f. =  1     p =  1.236041e-06 
+## 
+##  
+## Fisher's Exact Test for Count Data
+## ------------------------------------------------------------
+## Sample estimate odds ratio:  6.579265 
+## 
+## Alternative hypothesis: true odds ratio is not equal to 1
+## p =  1.311709e-06 
+## 95% confidence interval:  2.837773 16.42969 
+## 
+## Alternative hypothesis: true odds ratio is less than 1
+## p =  0.9999999 
+## 95% confidence interval:  0 14.25436 
+## 
+## Alternative hypothesis: true odds ratio is greater than 1
+## p =  7.7122e-07 
+## 95% confidence interval:  3.193221 Inf 
+## 
+## 
+##  
+##        Minimum expected frequency: 14.44
+{% endhighlight %}
+or use a different form below, which gives the same result:
+
+{% highlight r %}
+CrossTable(contingencyTable, fisher = TRUE, chisq = TRUE, 
+  expected = TRUE, prop.c = FALSE, prop.t = FALSE, 
+  prop.chisq = FALSE,  sresid = TRUE, format = "SPSS")
+{% endhighlight %}
+The second row of each cell shows the expected frequencies; it should be clear that the smallest expected count is 14.44 (for cats that were trained with food and did dance). This value exceeds 5 and so the assumption has been met.
+</div>
 
 ## Conclusion
 Again, this post is only a brief summary of the assumptions mentioned in the book. Most text is directly copied from the book chapter. All the credit goes to Andy Field.

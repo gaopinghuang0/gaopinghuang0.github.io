@@ -170,7 +170,7 @@ See [How to use MathJax in Jekyll generated Github pages](http://haixing-hu.gith
 ```
 Note that I updated the `inlineMath` as `[ ['$','$'] ]` and CDN url to `cndjs`. The config of url remains the same.
 
-## Set fig.path for different post
+## Add figure prefix by setting fig.path for each post
 See [Blogging About R Code with R Markdown, Knitr, and Jekyll](https://nicolewhite.github.io/2015/02/07/r-blogging-with-rmarkdown-knitr-jekyll.html) by Nicole White. For example, put the following code at the beginning of each post:
 
 {% highlight r %}

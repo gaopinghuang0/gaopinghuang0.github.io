@@ -113,6 +113,7 @@ durbinWatsonTest(albumSales.3)
 It is assumed that the residuals in the model are random, normally distributed variables with a mean of 0.
 
 If we wanted to produce high-quality graphs for publication we would use *ggplot2()*. However, if we’re just looking at these graphs to check our assumptions, we’ll use the simpler (but not as nice) `plot()` and `hist()` functions.
+
 {% include toggle_button.html target="collapseResidualTest" %}
 <div markdown="1" class="collapse" id="collapseResidualTest">
 ```{r residual_by_plot, fig.width=5, out.width="50%", out.extra='style="float:left"'}
@@ -135,13 +136,19 @@ The mean values of the outcome variable for each increment of the predictor(s) l
 See section 8.4. Logistic regression shares some of the assumptions of normal regression: 1) Linearity, 2) Independent errors, and 3) Multicollinearity.
 
 ## Comparing two means, t-test
-Both independent t-test and the dependent t-test are *parametric tests* mentioned above. The independent t-test, because it is used to test different groups of people, also assumes:
-### 1. Independence
+Both independent t-test and the dependent t-test are *parametric tests* mentioned above. See section 9.4.3.
+1. The sampling distribution is normally distributed.
+In the dependent t-test this means that the sampling distribution of the *differences* between scores should be normal, not the scores themselves (see section 9.6.3.4).
+2. Data are measured at least at the interval level.
+
+The independent t-test, because it is used to test different groups of people, also assumes:
+1. Independence. 
 Scores in different treatment conditions are independent (because they come from different people).
-### 2. Homogeneity of variance
+2. Homogeneity of variance.
 Well, at least in theory we assume equal variances, but in reality we don’t (Jane Superbrain Box 9.2).
 
 ## ANOVA
+The assumptions of *parametric test* also apply here.
 ### 1. Homogeneity of variance
 ### 2. Normality
 In terms of normality, what matters is that distributions *within groups* are normally distributed.
@@ -156,10 +163,36 @@ In terms of normality, what matters is that distributions *within groups* are no
 ### 1. Independence of the covariate and treatment effect
 For example, anxiety and depression are closely correlated (anxious people tend to be depressed) so if you wanted to compare an anxious group of people against a non-anxious group on some task, the chances are that the anxious group would also be more depressed than the non-anxious group. You might think that by adding depression as a covariate into the analysis you can look at the ‘pure’ effect of anxiety, but you can’t.
 
+We can run an ANOVA to test whether the covariate variable and treatment variable are independent or not. See section 11.4.6.
+
+{% include toggle_button.html target="collapseANCOVATest1" %}
+<div markdown="1" class="collapse" id="collapseANCOVATest1">
+```{r independence_of_covariate}
+viagraData <- read.delim("../assets/Rdata/ViagraCovariate.dat", header = TRUE)
+viagraData$dose <- factor(viagraData$dose, levels = c(1:3),
+    labels = c("Placebo", "Low Dose", "High Dose"))
+viagraModel <- aov(partnerLibido ~ dose, data=viagraData)
+summary(viagraModel)
+```
+The means for partner’s libido are not significantly different in the placebo, low- and high-dose groups. This result means that it is appropriate to use partner’s libido as a covariate in the analysis.
+</div>
+
+
 ### 2. Homogeneity of regression slopes
 For example, if there’s a positive relationship between the covariate and the outcome in one group, we assume that there is a positive relationship in all of the other groups too.
 
 If you have violated the assumption of homogeneity of regression slopes, or if the variability in regression slopes is an interesting hypothesis in itself, then you can explicitly model this variation using multilevel linear models (see Chapter 19).
+
+To test the assumption of homogeneity of regression slopes we need to run the ANCOVA again, but include the interaction between the covariate and predictor variable. See section 11.4.14.
+
+{% include toggle_button.html target="collapseANCOVATest2" %}
+<div markdown="1" class="collapse" id="collapseANCOVATest2">
+```{r homogeneity_of_regression_slopes}
+hoRS <- aov(libido ~ partnerLibido*dose, data = viagraData)
+Anova(hoRS, type="III")  # from car package
+```
+The main thing in which we’re interested is the interaction term, so look at the significance value of the covariate by outcome interaction ( **partnerLibido:dose** ), if this effect is significant then the assumption of homogeneity of regression slopes has been broken.
+</div>
 
 
 ## Repeated-measures design
@@ -171,6 +204,22 @@ Sphericity refers to the equality of variances of the *differences* between trea
 
 $$Variance_{A–B} ≈ Variance_{A–C} ≈ Variance_{B–C}$$
 
+Mauchly’s test, see section 13.4.7.1.
+{% include toggle_button.html target="collapseMauchlyTest" %}
+<div markdown="1" class="collapse" id="collapseMauchlyTest">
+```{r mauchly_test_for_sphericity}
+Participant<-gl(8, 4, labels = c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8" ))
+Animal<-gl(4, 1, 32, labels = c("Stick Insect", "Kangaroo Testicle", "Fish Eye", "Witchetty Grub"))
+Retch<-c(8, 7, 1, 6, 9, 5, 2, 5, 6, 2, 3, 8, 5, 3, 1, 9, 8, 4, 5, 8, 7, 5, 6, 7, 10, 2, 7, 2, 12, 6, 8, 1)
+longBush<-data.frame(Participant, Animal, Retch)
+
+library(ez)
+bushModel<-ezANOVA(data = longBush, dv = .(Retch), wid = .(Participant), within = .(Animal), detailed = TRUE, type = 3)
+bushModel
+```
+The important column is the one containing the significance value (p) and in this case the value, .047, is less than the critical value of .05 (which is why there is an asterisk next to the p-value), so we reject the assumption that the variances of the differences between levels are equal. In other words, the assumption of sphericity has been violated, W = 0.14, p = .047. 
+</div>
+
 ## Categorical data, chi-square test, loglinear analysis
 
 ### 1. Independence of data
@@ -178,6 +227,27 @@ For the chi-square test to be meaningful it is imperative that each person, item
 
 ### 2. The expected frequencies should be greater than 5.
 Although it is acceptable in larger contingency tables to have up to 20% of expected frequencies below 5, the result is a loss of statistical power.
+
+Use `CrossTable()` from *gmodels* package, see section 18.6.4.
+
+{% include toggle_button.html target="collapseCrossTable" %}
+<div markdown="1" class="collapse" id="collapseCrossTable">
+```{r crosstable_for_chi_square}
+catsData<-read.delim("../assets/Rdata/cats.dat", header = TRUE)
+
+library(gmodels)
+CrossTable(catsData$Training, catsData$Dance, fisher = TRUE, chisq = TRUE, 
+  expected = TRUE, prop.c = FALSE, prop.t = FALSE, 
+  prop.chisq = FALSE,  sresid = TRUE, format = "SPSS")
+```
+or use a different form below, which gives the same result:
+```{r eval=FALSE}
+CrossTable(contingencyTable, fisher = TRUE, chisq = TRUE, 
+  expected = TRUE, prop.c = FALSE, prop.t = FALSE, 
+  prop.chisq = FALSE,  sresid = TRUE, format = "SPSS")
+```
+The second row of each cell shows the expected frequencies; it should be clear that the smallest expected count is 14.44 (for cats that were trained with food and did dance). This value exceeds 5 and so the assumption has been met.
+</div>
 
 ## Conclusion
 Again, this post is only a brief summary of the assumptions mentioned in the book. Most text is directly copied from the book chapter. All the credit goes to Andy Field.
