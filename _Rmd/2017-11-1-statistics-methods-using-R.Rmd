@@ -43,6 +43,8 @@ A brief summary of common statistic methods using R from the book "Discovering S
 * *psych* -
     * `describe()` - such as `describe(dlf$day1)`, similar to `stat.desc()` above.
 * *QuantPsyc* - to get standardized regression coefficients
+* *reshape2* - for reshape
+    * `melt()`
 * *stats* - built-in, auto-loaded
     * `wilcox.test()`
     * `shapiro.test()`, Shapiro-Wilk test, such as `shapiro.test(variable)`
