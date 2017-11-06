@@ -10,7 +10,7 @@ use_bootstrap: true
 knitr::opts_chunk$set(fig.path='assets/Rfig/assumption-of-statistics-')
 ```
 
-A brief summary of the assumptions of statistic methods from the book "Discovering Statistics using R (2012)" by Andy Field. Most text is directly copied from the book chapter. All the credit goes to him.
+A brief summary of the assumptions of statistic methods from the book "Discovering Statistics using R (2012)" by Andy Field. Most code and text are directly copied from the book chapter. All the credit goes to him.
 
 To test these assumptions using R, click "Toggle Code" button.
 
@@ -188,6 +188,8 @@ To test the assumption of homogeneity of regression slopes we need to run the AN
 {% include toggle_button.html target="collapseANCOVATest2" %}
 <div markdown="1" class="collapse" id="collapseANCOVATest2">
 ```{r homogeneity_of_regression_slopes}
+# remember to set orthogonal contrasts
+contrasts(viagraData$dose)<-cbind(c(-2,1,1), c(0,-1,1))
 hoRS <- aov(libido ~ partnerLibido*dose, data = viagraData)
 Anova(hoRS, type="III")  # from car package
 ```

@@ -8,7 +8,7 @@ use_bootstrap: true
 
 
 
-A brief summary of the assumptions of statistic methods from the book "Discovering Statistics using R (2012)" by Andy Field. Most text is directly copied from the book chapter. All the credit goes to him.
+A brief summary of the assumptions of statistic methods from the book "Discovering Statistics using R (2012)" by Andy Field. Most code and text are directly copied from the book chapter. All the credit goes to him.
 
 To test these assumptions using R, click "Toggle Code" button.
 
@@ -181,7 +181,7 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819   0.738
+##    1       0.0026951      1.949819    0.71
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
@@ -283,6 +283,8 @@ To test the assumption of homogeneity of regression slopes we need to run the AN
 <div markdown="1" class="collapse" id="collapseANCOVATest2">
 
 {% highlight r %}
+# remember to set orthogonal contrasts
+contrasts(viagraData$dose)<-cbind(c(-2,1,1), c(0,-1,1))
 hoRS <- aov(libido ~ partnerLibido*dose, data = viagraData)
 Anova(hoRS, type="III")  # from car package
 {% endhighlight %}
@@ -293,12 +295,12 @@ Anova(hoRS, type="III")  # from car package
 ## Anova Table (Type III tests)
 ## 
 ## Response: libido
-##                    Sum Sq Df F value   Pr(>F)   
-## (Intercept)         0.771  1  0.3157 0.579405   
-## partnerLibido      19.922  1  8.1565 0.008715 **
-## dose               36.558  2  7.4836 0.002980 **
-## partnerLibido:dose 20.427  2  4.1815 0.027667 * 
-## Residuals          58.621 24                    
+##                    Sum Sq Df F value    Pr(>F)    
+## (Intercept)        53.542  1 21.9207 9.323e-05 ***
+## partnerLibido      17.182  1  7.0346   0.01395 *  
+## dose               36.558  2  7.4836   0.00298 ** 
+## partnerLibido:dose 20.427  2  4.1815   0.02767 *  
+## Residuals          58.621 24                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 {% endhighlight %}

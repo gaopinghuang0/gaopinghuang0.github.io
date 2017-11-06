@@ -1,16 +1,15 @@
 ---
 layout: post
-title: "Summary of Statistics Methods using R"
+title: "Useful R Packages for Statistic Analysis"
 author: "Gaoping Huang"
 use_math: true
 use_bootstrap: false
 ---
 
 
-A brief summary of common statistic methods using R from the book "Discovering Statistics using R (2012)" by Andy Field.
+A brief summary of R packages (and corresponding functions) that are used in the book "Discovering Statistics using R (2012)" by Andy Field.
 
 
-## Useful packages
 * *boot* - for bootstrap
     * `boot()`, see section 6.5.7, such as `boot_kendall<-boot(liarData, bootTau, 2000)`
     * `boot.ci()`, confidence interval, such as `boot.ci(boot_kendall, conf=0.99)`, see section 6.5.7
@@ -59,25 +58,4 @@ A brief summary of common statistic methods using R from the book "Discovering S
 
 
 
-## Effect size
-
-* Eta squared ($\eta^2$), see chapter 10
-
-* Partial eta squared (*partial* $\eta^2$), see section 11.6
-
-* Omega squared ($\omega^2$), see section 10.7.
-This measure computes the overall effect size. It can be calculated only when we have equal numbers of participants in each group. If it's not the case, then use `rcontrast()` below.
-
-* `rcontrast(t, df)`, see section 10.7 and 11.6.
-This measure computes the effect size for more focused comparisons like planned contrasts.
-``` {r rcontrast}
-rcontrast<-function(t, df)
-{
-  r<-sqrt(t^2/(t^2 + df))
-  print(paste("r = ", r))
-}
-```
-
-* `mes()`, see section 11.6.
-This method calculates effect sizes between all combinations of groups
 
