@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Addons to Markdown, such as table of contents, hover anchor, load Disqus on demand"
+title: "Addons to Markdown, such as table of contents, hover anchor, on-demand Disqus"
 author: "Gaoping Huang"
 use_math: false
 use_bootstrap: false

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Assumptions of Statistics Analysis"
+title: "Assumptions of Statistic Analysis"
 author: "Gaoping Huang"
 use_math: true
 use_bootstrap: true
@@ -181,7 +181,7 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819    0.71
+##    1       0.0026951      1.949819     0.7
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
