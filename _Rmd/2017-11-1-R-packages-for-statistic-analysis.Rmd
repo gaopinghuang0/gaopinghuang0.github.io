@@ -34,7 +34,7 @@ A brief summary of R packages (and corresponding functions) that are used in the
 * *MASS* - for loglinear analysis
 * *mlogit* - for multinomial logistic regression
 * *multcomp* - for *post hoc* tests
-    * `glht()`, see section 11.4.11.
+    * `glht()`, Tukey tests, see section 11.4.11.
 * *pastecs* - for descriptive statistics
     * `stat.desc()`, such as `by(viagraData$libido, viagraData$dose, stat.desc)`
 * *polycor* - for correlation

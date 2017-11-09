@@ -339,7 +339,7 @@ summary(postHocs)
 ## Linear Hypotheses:
 ##                           Estimate Std. Error t value Pr(>|t|)  
 ## Low Dose - Placebo == 0      1.786      0.849    2.10    0.109  
-## High Dose - Placebo == 0     2.225      0.803    2.77    0.026 *
+## High Dose - Placebo == 0     2.225      0.803    2.77    0.027 *
 ## High Dose - Low Dose == 0    0.439      0.811    0.54    0.852  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -369,15 +369,14 @@ confint(postHocs)
 ## 
 ## Linear Hypotheses:
 ##                           Estimate lwr    upr   
-## Low Dose - Placebo == 0    1.786   -0.325  3.897
+## Low Dose - Placebo == 0    1.786   -0.325  3.896
 ## High Dose - Placebo == 0   2.225    0.230  4.220
 ## High Dose - Low Dose == 0  0.439   -1.577  2.455
 {% endhighlight %}
 This output suggests significant differences between the high-dose and placebo groups (t = 2.77, p < .05). The confidence intervals also confirm this conclusion because they do not cross zero for the comparison of the high dose and placebo groups.
 
 ### Plots
-aov() function automatically generates some plots
-that we can use to test the assumptions. We can see these graphs by executing:
+aov() function automatically generates some plots that we can use to test the assumptions. We can see these graphs by executing:
 
 {% highlight r %}
 plot(viagraModel)
@@ -440,8 +439,7 @@ Based on the previous output, a robust version of ANCOVA might be in order. Howe
 There are several ways to calculate effect sizes.
 * Eta squared ($\eta^2$), see chapter 10. This effect size is just $r^2$ by another name and is calculated by dividing the effect of interest, $SS_M$, by the total amount of variance in the data, $SS_T$. As such, it is the proportion of total variance explained by an effect. Since we have more than one effect, we could calculate $\eta^2$ for each effect.
 * Partial eta squared (*partial* $\eta^2$), see section 11.6. This differs from eta squared in that it looks not at the proportion of total variance that a variable explains, but at the proportion of variance that a variable explains that is not explained by other variables in the analysis.
-* Omega squared ($\omega^2$), see section 10.7.
-This measure computes the overall effect size. It can be calculated only when we have equal numbers of participants in each group. If it's not the case, then use `rcontrast()` below.
+* Omega squared ($\omega^2$), see section 10.7. This measure computes the overall effect size. It can be calculated only when we have equal numbers of participants in each group. If it's not the case, then use `rcontrast()` below.
 * `rcontrast(t, df)`, see section 10.7 and 11.6.
 This measure computes the effect size for more focused comparisons like planned contrasts.
 
