@@ -15,13 +15,21 @@ body {
   font-family: $baskerville;
   font-size: 14px;
 
-  @media (min-width: 600px) {
+  @media screen and (min-width: 600px) {
     font-size: 16px;
   }
+
 }
 
 body {
   -webkit-text-size-adjust: 100%;
+}
+
+@media screen and (max-width 600px) {
+  body {
+    margin-left: -15px;   // remove large margin on small device
+    margin-right: -15px;
+  }
 }
 
 h1,
