@@ -1,13 +1,16 @@
 ---
 layout: post
-title: "Addons to Markdown, such as table of contents, hover anchor, on-demand Disqus"
+title: "Enhance Markdown with table of contents, hover anchor, on-demand Disqus and tags"
 author: "Gaoping Huang"
 use_math: false
 use_bootstrap: false
 ---
 
+This post will cover some useful addons to the basic JeKyll page, such as table of content, hover anchor near each header, on-demand Disqus, and tags.
 
-## Hover Anchor near header
+## Support Table of content
+
+## Support Hover Anchor near header
 
 ### 1. Include AnchorJS
 ```html
@@ -58,3 +61,5 @@ See <https://www.bryanbraun.com/anchorjs/>
   opacity: 1;
 }
 ```
+
+## Support Tags
