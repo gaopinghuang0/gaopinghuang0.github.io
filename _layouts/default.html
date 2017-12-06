@@ -34,6 +34,7 @@
       <script src="{{ site.baseurl }}/bootstrap/js/bootstrap.min.js"></script>
     {% endif %}
 
+    <!-- only load analytics in production mode (i.e., github.io) to prevent tracking in local mode -->
     {% if jekyll.environment == 'production' %}
       {% include analytics.html %}
     {% endif %}

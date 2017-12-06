@@ -1,16 +1,18 @@
 ---
 layout: post
-title: "Enhance Markdown with table of contents, hover anchor, on-demand Disqus and tags"
+title: "Enhance Markdown with table of contents, hover anchor, on-demand Disqus, tags, and more"
 author: "Gaoping Huang"
 use_math: false
 use_bootstrap: false
 ---
 
-This post will cover some useful addons to the basic JeKyll page, such as table of content, hover anchor near each header, on-demand Disqus, and tags.
+This post will cover some useful addons to the basic Jekyll markdown page, such as table of content, hover anchor for all headers, on-demand Disqus, tags, and more.
 
-## Support Table of content
+## Support "Table of Content"
+Since `kramdown` is used as the default markdown converter, it supports automatic "Table of Content" generation. Check the [official doc](https://kramdown.gettalong.org/converter/html.html#toc).
 
-## Support Hover Anchor near header
+## Support "Hover Anchor" for all headers
+This part is adapted from the post [Adding hover anchor links to header on GitHub Pages using Jekyll](https://milanaryal.com/adding-hover-anchor-links-to-header-on-github-pages-using-jekyll/) by Milan Aryal.
 
 ### 1. Include AnchorJS
 ```html
@@ -62,4 +64,10 @@ See <https://www.bryanbraun.com/anchorjs/>
 }
 ```
 
-## Support Tags
+## Load "DISQUS" on-demand
+Just use the same code as my [`_includes/disqus.html`](https://github.com/gaopinghuang0/gaopinghuang0.github.io/blob/master/_includes/disqus.html)  &#8592; **click it**.
+
+## Support "Tags"
+This seems to be a good resource: [Jekyll Tags on Github Pages](http://longqian.me/2017/02/09/github-jekyll-tag/)
+
+
