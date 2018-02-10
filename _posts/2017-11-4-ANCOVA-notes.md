@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ANCOVA Notes and R Code"
+title: "ANCOVA -- Notes and R Code"
 author: "Gaoping Huang"
 use_math: true
 use_bootstrap: false
@@ -369,9 +369,9 @@ confint(postHocs)
 ## 
 ## Linear Hypotheses:
 ##                           Estimate lwr    upr   
-## Low Dose - Placebo == 0    1.786   -0.325  3.896
-## High Dose - Placebo == 0   2.225    0.230  4.220
-## High Dose - Low Dose == 0  0.439   -1.577  2.455
+## Low Dose - Placebo == 0    1.786   -0.323  3.895
+## High Dose - Placebo == 0   2.225    0.231  4.218
+## High Dose - Low Dose == 0  0.439   -1.575  2.454
 {% endhighlight %}
 This output suggests significant differences between the high-dose and placebo groups (t = 2.77, p < .05). The confidence intervals also confirm this conclusion because they do not cross zero for the comparison of the high dose and placebo groups.
 

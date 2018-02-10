@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Factorial ANOVA Notes and R Code"
+title: "Factorial ANOVA -- Notes and R Code"
 author: "Gaoping Huang"
 use_math: true
 use_bootstrap: true
@@ -378,15 +378,15 @@ confint(postHocs)
 ## Fit: aov(formula = attractiveness ~ gender + alcohol + gender:alcohol, 
 ##     data = gogglesData)
 ## 
-## Quantile = 2.4301
+## Quantile = 2.4297
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                        Estimate lwr      upr     
-## 2 Pints - None == 0      0.9375  -6.8916   8.7666
-## 4 Pints - None == 0    -17.1875 -25.0166  -9.3584
-## 4 Pints - 2 Pints == 0 -18.1250 -25.9541 -10.2959
+## 2 Pints - None == 0      0.9375  -6.8904   8.7654
+## 4 Pints - None == 0    -17.1875 -25.0154  -9.3596
+## 4 Pints - 2 Pints == 0 -18.1250 -25.9529 -10.2971
 {% endhighlight %}
 The Bonferroni and Tukey tests show the same pattern of results: when participants had drunk no alcohol or 2 pints of alcohol, they selected equally attractive mates. However, after 4 pints had been consumed, participants selected significantly less attractive mates than after both 2 pints (p < .001) and no alcohol (p < .001).
 </div>
