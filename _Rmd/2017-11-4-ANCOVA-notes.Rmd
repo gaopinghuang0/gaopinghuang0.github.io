@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ANCOVA Notes and R Code"
+title: "ANCOVA -- Notes and R Code"
 author: "Gaoping Huang"
 use_math: true
 use_bootstrap: false

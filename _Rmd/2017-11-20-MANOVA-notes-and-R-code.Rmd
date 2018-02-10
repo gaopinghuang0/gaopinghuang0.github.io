@@ -1,0 +1,21 @@
+---
+layout: post
+title: "Multivariate ANOVA (MANOVA) -- Notes and R Code"
+author: "Gaoping Huang"
+use_math: true
+use_bootstrap: true
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(fig.path='assets/Rfig/multivariate-ANOVA-notes-')
+```
+
+This post covers my notes of **multivariate ANOVA** methods using R from the book "Discovering Statistics using R (2012)" by Andy Field. Most code and text are directly copied from the book. All the credit goes to him.
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
+
+there may be circumstances in which we are interested in several dependent variables, and in these cases the simple ANOVA model is inadequate.
+
+the term mental health covers a wide range of concepts, including (to name a few) anxiety, depression, general distress and psychosis. As such, we have four outcome measures and all the tests we have encountered allow us to look at one. 

@@ -2,7 +2,7 @@
 permalink:      /:year/:month/:day/:title
 
 # Setup
-title:          Gaoping's Blog
+title:          Gaoping Huang
 paginate:       5
 baseurl:        ''
 url:            "https://gaopinghuang0.github.io"

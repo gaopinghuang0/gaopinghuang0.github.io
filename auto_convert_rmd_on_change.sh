@@ -5,4 +5,4 @@
 # 11/03/2017  Gaoping  First release
 
 rmdfile=$1
-when-changed -v $rmdfile -c ./convert_rmd.sh $rmdfile
+when-changed -v $rmdfile -c bash convert_rmd.sh $rmdfile

@@ -12,16 +12,16 @@ $ jekyll serve
 $ jekyll serve --draft
 ```
 
-Head to http://localhost:4000/ to see the site.
+Then head to http://localhost:4000/ to see the site.
 
-### Edit Blogs
+### Editing Blogs
 
 Draft blog posts are put under `_drafts/*.md` or `_Rmd/*.Rmd` (R Markdown). To auto-convert R Markdown files into `_posts/*.md`, run:
 ```bash
-when-changed _Rmd/<filename>.rmd -c bash convert_rmd.sh _Rmd/<filename>.rmd
+$ when-changed _Rmd/<filename>.rmd -c bash convert_rmd.sh _Rmd/<filename>.rmd
 
 # or use a helper script
-./auto_convert_rmd_on_change.sh _Rmd/<filename>.rmd
+$ ./auto_convert_rmd_on_change.sh _Rmd/<filename>.rmd
 ```
 
 
