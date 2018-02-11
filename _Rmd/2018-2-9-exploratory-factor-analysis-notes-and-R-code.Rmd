@@ -31,9 +31,9 @@ With a little help from a few lecturer friends I collected 2571 completed questi
 ### Correlations between variables
 The first thing to do when conducting a factor analysis or principal components analysis is to look at the correlations of the variables.
 
-There are essentially two potential problems: (1) correlations that are not high enough; and (2) correlations that are too high.
-
 The correlations between variables can be checked using the `cor()` function to create a correlation matrix of all variables.
+
+There are essentially two potential problems: (1) correlations that are not high enough; and (2) correlations that are too high.
 
 We can test for the first problem by visually scanning the correlation matrix and looking for correlations below about .3: if any variables have lots of correlations below this value then consider excluding them.
 
@@ -72,7 +72,7 @@ det(raqMatrix)
 This value is greater than the necessary value of 0.00001 (see section 17.5). As such, our determinant does not seem problematic. 
 
 ### Factor extraction, here PCA
-For our present purposes we will use *principal components analysis* (PCA), which strictly speaking isn’t factor analysis; however, the two procedures may often yield similar results. Principal component analysis is carried out using the `principal()` function, in the `psych` package.
+For our present purposes we will use *principal components analysis* (PCA), which strictly speaking isn’t factor analysis; however, the two procedures may often yield similar results. Principal component analysis is carried out using the `principal()` function in the `psych` package.
 ```{r PCA}
 pc1 <- principal(raqData, nfactors=23, rotate="none")
 # pc1 has two columns, h2 and u2
