@@ -7,6 +7,9 @@ Blog address: <https://gaopinghuang0.github.io>
 Run server locally
 ```bash
 $ jekyll serve
+# or 
+$ bundle exec jekyll serve
+
 # or show draft blog posts under `_drafts/` for development
 $ jekyll serve --draft
 ```
