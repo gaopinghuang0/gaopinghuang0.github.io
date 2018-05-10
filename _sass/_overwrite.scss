@@ -5,14 +5,28 @@
 // credit: https://stackoverflow.com/a/10797268/4246348
 body {
   -ms-word-break: break-all;
-     word-break: break-all;
-
-     // Non standard for webkit
-     word-break: break-word;
+      word-break: break-all;
+      // Non standard for webkit
+      word-break: break-word;
 
   -webkit-hyphens: auto;
      -moz-hyphens: auto;
           hyphens: auto;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+}
+
+main,
+footer,
+.nav-container {
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 .btn {
@@ -23,4 +37,8 @@ body {
   display: block;
   text-align: center;
   margin-top: 20px;
+}
+
+.post-title {
+  font-size: 2.5rem;
 }

@@ -10,10 +10,18 @@ use_bootstrap: false
 
 This post covers my notes of ANCOVA methods using R from the book "Discovering Statistics using R (2012)" by Andy Field. Most code and text are directly copied from the book. All the credit goes to him.
 
+
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-## 0. Assumptions
+## 0a. What is ANCOVA?
+ANCOVA extends ANOVA by including **covariates** into the analysis. Covariates mean continuous variables that are not part of the main experimental manipulation but have an influence on the dependent variable.
+
+There are two reasons for including covariates: 
+* **To reduce within-group error variance:**  If we can explain some of the ‘unexplained’ variance ($ SS_R $) in terms of other variables (covariates), then we reduce the error variance, allowing us to more accurately assess the effect of the independent variable ($ SS_M $).
+* **Elimination of confounds:** In any experiment, there may be unmeasured variables that confound the results (i.e., variables other than the experimental manipulation that affect the outcome variable). If any variables are known to influence the dependent variable being measured, then ANCOVA is ideally suited to remove the bias of these variables. Once a possible confounding variable has been identified, it can be measured and entered into the analysis as a covariate.
+
+## 0b. Assumptions
 It is a part of my another post [Assumptions of statistics methods](/2017/11/01/assumptions-of-statistics-methods).
 
 ### Independence of the covariate and treatment effect
@@ -339,7 +347,7 @@ summary(postHocs)
 ## Linear Hypotheses:
 ##                           Estimate Std. Error t value Pr(>|t|)  
 ## Low Dose - Placebo == 0      1.786      0.849    2.10    0.109  
-## High Dose - Placebo == 0     2.225      0.803    2.77    0.027 *
+## High Dose - Placebo == 0     2.225      0.803    2.77    0.026 *
 ## High Dose - Low Dose == 0    0.439      0.811    0.54    0.852  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -369,9 +377,9 @@ confint(postHocs)
 ## 
 ## Linear Hypotheses:
 ##                           Estimate lwr    upr   
-## Low Dose - Placebo == 0    1.786   -0.323  3.895
-## High Dose - Placebo == 0   2.225    0.231  4.218
-## High Dose - Low Dose == 0  0.439   -1.575  2.454
+## Low Dose - Placebo == 0    1.786   -0.325  3.896
+## High Dose - Placebo == 0   2.225    0.230  4.220
+## High Dose - Low Dose == 0  0.439   -1.576  2.455
 {% endhighlight %}
 This output suggests significant differences between the high-dose and placebo groups (t = 2.77, p < .05). The confidence intervals also confirm this conclusion because they do not cross zero for the comparison of the high dose and placebo groups.
 
