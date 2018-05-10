@@ -3,11 +3,16 @@
 
 // auto-wrap long url
 // credit: https://stackoverflow.com/a/10797268/4246348
+// update on 5/9/18 by Gaoping:
+// no need to use word-break if we set the max-width and
+// width:100%; on mibile, it will automatically wrap the
+// long url in <p> and remain the <code> block unwrapped
+// (it is crucial to remain each line of code unwrapped) 
 body {
-  -ms-word-break: break-all;
-      word-break: break-all;
+  // -ms-word-break: break-all;
+      // word-break: break-all;
       // Non standard for webkit
-      word-break: break-word;
+      // word-break: break-word;
 
   -webkit-hyphens: auto;
      -moz-hyphens: auto;
