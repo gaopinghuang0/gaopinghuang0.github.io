@@ -4,14 +4,18 @@ This blog is used to share my knowledge in programming, statistics, and machine 
 Blog address: <https://gaopinghuang0.github.io>
 
 ## Getting Started
+Install dependencies:
+```bash
+$ gem install bundler  # bundler is a package manager for ruby, install it first if not yet
+$ bundle update & bundle install  # install based on Gemfile
+```
+
 Run server locally
 ```bash
-$ jekyll serve
-# or 
-$ bundle exec jekyll serve
+$ bundle exec jekyll serve  --livereload
 
 # or show draft blog posts under `_drafts/` for development
-$ jekyll serve --draft
+$ bundle exec jekyll serve  --livereload --draft
 ```
 
 Then head to http://localhost:4000/ to see the site.
