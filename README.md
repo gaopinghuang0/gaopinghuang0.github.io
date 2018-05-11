@@ -20,12 +20,12 @@ Then head to http://localhost:4000/ to see the site.
 
 Draft blog posts are put under `_drafts/*.md` and `_Rmd/*.Rmd` (R Markdown). For a normal `*.md` draft, once done, move to `_posts/` with proper name. For a `*.Rmd` draft, do the additional conversion as below.
 
-To manually convert R markdown into `_posts/*.md`, run:
+To manually convert one R markdown into `_posts/*.md`, run:
 ```bash
 $ ./convert_rmd.sh _Rmd/<filename>.Rmd
 ```
 
-To watch changes and auto-convert R Markdown files into `_posts/*.md`, run:
+To watch changes and auto-convert one R Markdown into `_posts/*.md`, run:
 ```bash
 $ when-changed _Rmd/<filename>.Rmd -c bash convert_rmd.sh _Rmd/<filename>.Rmd
 
