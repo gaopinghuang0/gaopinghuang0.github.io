@@ -3,7 +3,7 @@
     border-bottom: 1px solid $grey-2;
     color: $default-color;
     display: inline-block;
-    padding: 2rem 0;
+    padding: 0 0 2rem;
 
     &:hover .catalogue-line,
     &:focus .catalogue-line {
@@ -15,10 +15,21 @@
     }
   }
 
-  &-time {
+  &-meta {
+    position: relative;
+    padding-top: 2rem;
     color: $default-tint;
     font-family: $palatino;
+  }
+
+  &-time {
     letter-spacing: .5px;
+  }
+
+  &-tags {
+    position: absolute;
+    bottom: 0;
+    right: 1rem;
   }
 
   &-title {
@@ -36,4 +47,6 @@
     display: block;
     width: 2rem;
   }
+
+
 }

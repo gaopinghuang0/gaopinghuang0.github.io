@@ -2,6 +2,7 @@
 layout: post
 title: "ANCOVA -- Notes and R Code"
 author: "Gaoping Huang"
+tags: R
 use_math: true
 use_bootstrap: false
 ---

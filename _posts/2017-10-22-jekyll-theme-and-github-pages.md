@@ -2,6 +2,7 @@
 layout: post
 title: "Using Jekyll Themes and hosting on Github.io"
 author: "Gaoping"
+tags: Jekyll
 ---
 
 Although there are plenty of guides introducing Jekyll and Github pages, such as [Jonathan's great guide](http://jmcglone.com/guides/github-pages/), I would like to record my own preferred way.

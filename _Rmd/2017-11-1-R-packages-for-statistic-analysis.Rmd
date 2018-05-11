@@ -2,6 +2,7 @@
 layout: post
 title: "Useful R Packages for Statistic Analysis"
 author: "Gaoping Huang"
+tags: R
 use_math: true
 use_bootstrap: false
 ---
@@ -9,7 +10,7 @@ use_bootstrap: false
 
 A brief summary of R packages (and corresponding functions) that are used in the book "Discovering Statistics using R (2012)" by Andy Field.
 
-
+Packages and functions (order by alphabetical):
 * *boot* - for bootstrap
     * `boot()`, see section 6.5.7, such as `boot_kendall<-boot(liarData, bootTau, 2000)`
     * `boot.ci()`, confidence interval, such as `boot.ci(boot_kendall, conf=0.99)`, see section 6.5.7
