@@ -7,9 +7,7 @@ use_math: true
 use_bootstrap: false
 ---
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(fig.path='assets/Rfig/multivariate-ANOVA-notes-')
-```
+
 
 This post covers my notes of **multivariate ANOVA** (MANOVA) methods using R from the book "Discovering Statistics using R (2012)" by Andy Field. Most code and text are directly copied from the book. All the credit goes to him.
 
@@ -66,17 +64,28 @@ Pillai's trace is considered to be the most powerful and robust statistic for ge
 
 ### 3.1 Enter data
 The data is stored at: [assets/Rdata/OCD.dat](/assets/Rdata/OCD.dat).
-```{r enter_data}
+
+{% highlight r %}
 ocdData <- read.delim("../assets/Rdata/OCD.dat", header = TRUE)
 # rename level label
 ocdData$Group<-factor(ocdData$Group, levels = c("CBT", "BT", "No Treatment Control"), labels = c("CBT", "BT", "NT"))
 str(ocdData)
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## 'data.frame':	30 obs. of  3 variables:
+##  $ Group   : Factor w/ 3 levels "CBT","BT","NT": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Actions : int  5 5 4 4 5 3 7 6 6 4 ...
+##  $ Thoughts: int  14 11 16 13 12 14 12 15 16 11 ...
+{% endhighlight %}
 
 ### 3.2 Explore the data
 Use *ggplot2* to plot boxplots of treatment group on the x-axis and obsession-related thoughts and actions displayed on the y-axis (in different colors).
 
-```{r self_test}
+
+{% highlight r %}
 library(reshape2)  # for melt() function
 library(ggplot2)
 # First we need to restructure the data into long format:
@@ -85,7 +94,9 @@ names(ocdMelt) <- c('Group', 'Outcome_Measure', 'Frequency')
 # plot
 ocdBoxplot <- ggplot(ocdMelt, aes(Group, Frequency, color = Outcome_Measure))
 ocdBoxplot + geom_boxplot() + labs(x='Treatment Group', y='Number of Thoughts/Actions', color='Outcome_Measure') + scale_y_continuous(breaks=seq(0,20, by=2))
-```
+{% endhighlight %}
+
+![plot of chunk self_test](/assets/Rfig/multivariate-ANOVA-notes-self_test-1.svg)
 
 The only noteworthy point really is that there is some evidence of an outlier in the no-treatment group (for Thoughts) and, in the same group, scores for Actions seem like they might be a little skewed (there is no lower tail).
 
@@ -97,21 +108,40 @@ Moreover, we can test the assumption of multivariate normality by using `mshapir
 ### 3.3 Do the MANOVA
 We use the `manova()` function, which takes exactly the same form as `aov()`.
 As with most of the models in this book, we have one outcome variable. However, in MANOVA, we have several outcomes, so we need to bind them into one variable.
-```{r bind_outcomes_as_single_variable}
+
+{% highlight r %}
 outcome <- cbind(ocdData$Actions, ocdData$Thoughts)
-```
+{% endhighlight %}
 Then we use this new variable as the outcome (containing Actions and Thoughts) in our model:
-```{r do_MANOVA}
+
+{% highlight r %}
 ocdModel <- manova(outcome ~ Group, data=ocdData)
-```
+{% endhighlight %}
 To see the output of the model, we use the summary command; by default, Pillai's trace is used, but we can set other tests as well.
-```{r summary_model}
+
+{% highlight r %}
 summary(ocdModel, intercept=TRUE)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##             Df  Pillai approx F num Df den Df  Pr(>F)    
+## (Intercept)  1 0.98285   745.23      2     26 < 2e-16 ***
+## Group        2 0.31845     2.56      4     54 0.04904 *  
+## Residuals   27                                           
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # Or use other tests
 # summary(ocdModel, intercept=TRUE, test="Wilks")
 # summary(ocdModel, intercept=TRUE, test="Hotelling")
 # summary(ocdModel, intercept=TRUE, test="Roy")
-```
+{% endhighlight %}
 For the Group variable, Pillai's trace has p value 0.049, which indicates a significant difference.
 
 However, we are still unclear about: which groups differed from which; and whether the effect of therapy was on the Thoughts, Actions, or a combination of both.
@@ -120,9 +150,26 @@ To determine that, we can look at univariate tests.
 
 ### 3.4 Follow-up analysis: univariate test statistics
 We can simply execute:
-```{r follow_up_ANOVA}
+
+{% highlight r %}
 summary.aov(ocdModel)
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##  Response 1 :
+##             Df Sum Sq Mean Sq F value  Pr(>F)  
+## Group        2 10.467  5.2333  2.7706 0.08046 .
+## Residuals   27 51.000  1.8889                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##  Response 2 :
+##             Df  Sum Sq Mean Sq F value Pr(>F)
+## Group        2  19.467  9.7333  2.1541 0.1355
+## Residuals   27 122.000  4.5185
+{% endhighlight %}
 The table labelled *Response 1* is for the Actions variable and *Response 2* is for the Thoughts variable.
 
 Note that the F values and p values from this follow-up analysis of MANOVA are *identical* to those obtained if one-way ANOVA was conducted on each dependent variable.
@@ -134,27 +181,83 @@ Note that because the univariate ANOVAs above were both non-significant, we shou
 
 #### Set contrasts
 It makes sense to compare each of the treatment groups to the no-treatment control group. We can set the contrasts manually with some meaningful names:
-```{r set_contrasts}
+
+{% highlight r %}
 CBT_vs_NT <- c(1, 0, 0)
 BT_vs_NT <- c(0, 1, 0)
 contrasts(ocdData$Group) <- cbind(CBT_vs_NT, BT_vs_NT)
-```
+{% endhighlight %}
 Note that we're using a non-orthogonal contrast, which means that we cannot look at Type III sums of squares.
 
 #### Create models
 The contrasts are not part of MANOVA model, and so we need to create separate linear models for each outcome measure. For Thoughts and Actions, we use
-```{r contrasts_model}
+
+{% highlight r %}
 actionModel <- lm(Actions ~ Group, data=ocdData)
 thoughtsModel <- lm(Thoughts ~ Group, data=ocdData)
-```
+{% endhighlight %}
 <small>*Note that the book may have an error here: the author mentioned to use `aov()` function to create the models, but in fact used `lm()` function as above.*</small>
 
 #### Interpret the contrasts
 We can interpret the contrasts by:
-```{r interpret_contrasts} 
+
+{% highlight r %}
 summary.lm(actionModel)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## 
+## Call:
+## lm(formula = Actions ~ Group, data = ocdData)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -2.700 -0.975  0.100  1.075  2.300 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)      5.0000     0.4346  11.504 6.47e-12 ***
+## GroupCBT_vs_NT  -0.1000     0.6146  -0.163   0.8720    
+## GroupBT_vs_NT   -1.3000     0.6146  -2.115   0.0438 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.374 on 27 degrees of freedom
+## Multiple R-squared:  0.1703,	Adjusted R-squared:  0.1088 
+## F-statistic: 2.771 on 2 and 27 DF,  p-value: 0.08046
+{% endhighlight %}
+
+
+
+{% highlight r %}
 summary.lm(thoughtsModel)
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## 
+## Call:
+## lm(formula = Thoughts ~ Group, data = ocdData)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -2.40  -1.40  -0.70   1.45   5.00 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)     15.0000     0.6722  22.315   <2e-16 ***
+## GroupCBT_vs_NT  -1.6000     0.9506  -1.683    0.104    
+## GroupBT_vs_NT    0.2000     0.9506   0.210    0.835    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.126 on 27 degrees of freedom
+## Multiple R-squared:  0.1376,	Adjusted R-squared:  0.07372 
+## F-statistic: 2.154 on 2 and 27 DF,  p-value: 0.1355
+{% endhighlight %}
 As expected, there is no significant difference. However, in actionModel, there is a significant difference between BT to NT, which is a little unexpected. The author did not explain the reason in the book.
 
 ## Conclusion

@@ -13,6 +13,11 @@ A brief summary of the assumptions of statistic methods from the book "Discoveri
 
 To test these assumptions using R, click "Toggle Code" button.
 
+## Contents
+{:.no_toc}
+* Will be replaced with the ToC, excluding the "Contents" header above
+{:toc}
+
 ## Parametric data
 See section 5.3
 ### 1. Normally distributed data
@@ -182,7 +187,7 @@ durbinWatsonTest(albumSales.3)
 
 {% highlight text %}
 ##  lag Autocorrelation D-W Statistic p-value
-##    1       0.0026951      1.949819   0.738
+##    1       0.0026951      1.949819   0.678
 ##  Alternative hypothesis: rho != 0
 {% endhighlight %}
 > As a conservative rule I suggested that values less than 1 or greater than 3 should definitely raise alarm bells. The closer to 2 that the value is, the better, and for these data (Output 7.8) the value is 1.950, which is so close to 2 that the assumption has almost certainly been met. The p-value of .7 confirms this conclusion (it is very much bigger than .05 and, therefore, not remotely significant).
@@ -329,36 +334,28 @@ Retch<-c(8, 7, 1, 6, 9, 5, 2, 5, 6, 2, 3, 8, 5, 3, 1, 9, 8, 4, 5, 8, 7, 5, 6, 7,
 longBush<-data.frame(Participant, Animal, Retch)
 
 library(ez)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(ez): there is no package called 'ez'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 bushModel<-ezANOVA(data = longBush, dv = .(Retch), wid = .(Participant), within = .(Animal), detailed = TRUE, type = 3)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "ezANOVA"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 bushModel
 {% endhighlight %}
 
 
 
 {% highlight text %}
-## Error in eval(expr, envir, enclos): object 'bushModel' not found
+## $ANOVA
+##        Effect DFn DFd     SSn     SSd          F            p p<.05
+## 1 (Intercept)   1   7 990.125  17.375 398.899281 1.973536e-07     *
+## 2      Animal   3  21  83.125 153.375   3.793806 2.557030e-02     *
+##         ges
+## 1 0.8529127
+## 2 0.3274249
+## 
+## $`Mauchly's Test for Sphericity`
+##   Effect        W          p p<.05
+## 2 Animal 0.136248 0.04684581     *
+## 
+## $`Sphericity Corrections`
+##   Effect       GGe      p[GG] p[GG]<.05       HFe      p[HF] p[HF]<.05
+## 2 Animal 0.5328456 0.06258412           0.6657636 0.04833061         *
 {% endhighlight %}
 The important column is the one containing the significance value (p) and in this case the value, .047, is less than the critical value of .05 (which is why there is an asterisk next to the p-value), so we reject the assumption that the variances of the differences between levels are equal. In other words, the assumption of sphericity has been violated, W = 0.14, p = .047. 
 </div>
@@ -380,17 +377,6 @@ Use `CrossTable()` from *gmodels* package, see section 18.6.4.
 catsData<-read.delim("../assets/Rdata/cats.dat", header = TRUE)
 
 library(gmodels)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(gmodels): there is no package called 'gmodels'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 CrossTable(catsData$Training, catsData$Dance, fisher = TRUE, chisq = TRUE, 
   expected = TRUE, prop.c = FALSE, prop.t = FALSE, 
   prop.chisq = FALSE,  sresid = TRUE, format = "SPSS")
@@ -399,7 +385,65 @@ CrossTable(catsData$Training, catsData$Dance, fisher = TRUE, chisq = TRUE,
 
 
 {% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "CrossTable"
+## 
+##    Cell Contents
+## |-------------------------|
+## |                   Count |
+## |         Expected Values |
+## |             Row Percent |
+## |            Std Residual |
+## |-------------------------|
+## 
+## Total Observations in Table:  200 
+## 
+##                     | catsData$Dance 
+##   catsData$Training |       No  |      Yes  | Row Total | 
+## --------------------|-----------|-----------|-----------|
+## Affection as Reward |      114  |       48  |      162  | 
+##                     |  100.440  |   61.560  |           | 
+##                     |   70.370% |   29.630% |   81.000% | 
+##                     |    1.353  |   -1.728  |           | 
+## --------------------|-----------|-----------|-----------|
+##      Food as Reward |       10  |       28  |       38  | 
+##                     |   23.560  |   14.440  |           | 
+##                     |   26.316% |   73.684% |   19.000% | 
+##                     |   -2.794  |    3.568  |           | 
+## --------------------|-----------|-----------|-----------|
+##        Column Total |      124  |       76  |      200  | 
+## --------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson's Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  25.35569     d.f. =  1     p =  4.767434e-07 
+## 
+## Pearson's Chi-squared test with Yates' continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  23.52028     d.f. =  1     p =  1.236041e-06 
+## 
+##  
+## Fisher's Exact Test for Count Data
+## ------------------------------------------------------------
+## Sample estimate odds ratio:  6.579265 
+## 
+## Alternative hypothesis: true odds ratio is not equal to 1
+## p =  1.311709e-06 
+## 95% confidence interval:  2.837773 16.42969 
+## 
+## Alternative hypothesis: true odds ratio is less than 1
+## p =  0.9999999 
+## 95% confidence interval:  0 14.25436 
+## 
+## Alternative hypothesis: true odds ratio is greater than 1
+## p =  7.7122e-07 
+## 95% confidence interval:  3.193221 Inf 
+## 
+## 
+##  
+##        Minimum expected frequency: 14.44
 {% endhighlight %}
 or use a different form below, which gives the same result:
 

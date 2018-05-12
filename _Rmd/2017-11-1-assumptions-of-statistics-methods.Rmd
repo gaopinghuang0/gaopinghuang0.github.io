@@ -15,6 +15,11 @@ A brief summary of the assumptions of statistic methods from the book "Discoveri
 
 To test these assumptions using R, click "Toggle Code" button.
 
+## Contents
+{:.no_toc}
+* Will be replaced with the ToC, excluding the "Contents" header above
+{:toc}
+
 ## Parametric data
 See section 5.3
 ### 1. Normally distributed data
