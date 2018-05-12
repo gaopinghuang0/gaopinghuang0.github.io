@@ -41,36 +41,8 @@ For the second problem, if you have reason to believe that the correlation matri
 
 {% highlight r %}
 library(corpcor);
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(corpcor): there is no package called 'corpcor'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 library(GPArotation);
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(GPArotation): there is no package called 'GPArotation'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 library(psych)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(psych): there is no package called 'psych'
 {% endhighlight %}
 
 ### Load data and calculate correlations
@@ -144,7 +116,14 @@ cortest.bartlett(raqData)
 
 
 {% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "cortest.bartlett"
+## $chisq
+## [1] 19334.49
+## 
+## $p.value
+## [1] 0
+## 
+## $df
+## [1] 253
 {% endhighlight %}
 
 
@@ -173,17 +152,6 @@ For our present purposes we will use *principal components analysis* (PCA), whic
 
 {% highlight r %}
 pc1 <- principal(raqData, nfactors=23, rotate="none")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "principal"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # pc1 has two columns, h2 and u2
 {% endhighlight %}
 h2 is the communalities, for now, all are 1; u2 is the uniqueness or unique variance, it's 1 minus the communality, for now, all are 0
@@ -195,11 +163,7 @@ The eigenvalues are stored in a variable called `pc1$values`
 plot(pc1$values, type="b")   # type="b" will show both the line and the points
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Error in plot(pc1$values, type = "b"): object 'pc1' not found
-{% endhighlight %}
+![plot of chunk scree_plot](/assets/Rfig/exploratory-factor-scree_plot-1.svg)
 From the scree plot, we could find the point of inflexion (around the third point to the left). The evidence from the scree plot and from the eigenvalues suggests a *four-component* solution may be the best.
 
 #### Redo PCA
@@ -207,12 +171,6 @@ Now that we know how many components we want to extract, we can rerun the analys
 
 {% highlight r %}
 pc2 <- principal(raqData, nfactors=4, rotate="none")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "principal"
 {% endhighlight %}
 The communalities (the h2 column) and uniquenesses (the u2 column) are changed. Remember that the communality is the proportion of common variance within a variable
 
@@ -229,38 +187,15 @@ The difference between the reproduced and actual correlation matrices is referre
 residuals<-factor.residuals(raqMatrix, pc2$loadings)
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "factor.residuals"
-{% endhighlight %}
-
 One approach to looking at residuals is just to say that we want the residuals to be small. In fact, we want most values to be less than 0.05. We need to create a new object to see it more easily.
 
 {% highlight r %}
 residuals<-as.matrix(residuals[upper.tri(residuals)])
 {% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in as.vector(x, mode): cannot coerce type 'closure' to vector of type 'any'
-{% endhighlight %}
 This command re-creates the object `residuals` by using only the upper triangle of the original matrix. We now have an object called `residuals` that contains the residuals stored in a column. This is handy because it makes it easy to calculate various things.
 
 {% highlight r %}
 large.resid<-abs(residuals) > 0.05
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in abs(residuals): non-numeric argument to mathematical function
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # proportion of the large residuals
 sum(large.resid)/nrow(residuals)
 {% endhighlight %}
@@ -268,7 +203,7 @@ sum(large.resid)/nrow(residuals)
 
 
 {% highlight text %}
-## Error in eval(expr, envir, enclos): object 'large.resid' not found
+## [1] 0.3596838
 {% endhighlight %}
 Some other residuals stats, such as the mean, are skipped here.
 
@@ -280,24 +215,54 @@ We can set `rotate="varimax"` in the `principal()` function. But there are too m
 
 {% highlight r %}
 pc3 <- principal(raqData, nfactors=4, rotate="varimax")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "principal"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 print.psych(pc3, cut = 0.3, sort = TRUE)
 {% endhighlight %}
 
 
 
 {% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "print.psych"
+## Principal Components Analysis
+## Call: principal(r = raqData, nfactors = 4, rotate = "varimax")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##     item   RC3   RC1   RC4   RC2   h2   u2 com
+## Q06    6  0.80                   0.65 0.35 1.0
+## Q18   18  0.68  0.33             0.60 0.40 1.5
+## Q13   13  0.65                   0.54 0.46 1.6
+## Q07    7  0.64  0.33             0.55 0.45 1.7
+## Q14   14  0.58  0.36             0.49 0.51 1.8
+## Q10   10  0.55                   0.33 0.67 1.2
+## Q15   15  0.46                   0.38 0.62 2.6
+## Q20   20        0.68             0.48 0.52 1.1
+## Q21   21        0.66             0.55 0.45 1.5
+## Q03    3       -0.57        0.37 0.53 0.47 2.3
+## Q12   12  0.47  0.52             0.51 0.49 2.1
+## Q04    4  0.32  0.52  0.31       0.47 0.53 2.4
+## Q16   16  0.33  0.51  0.31       0.49 0.51 2.6
+## Q01    1        0.50  0.36       0.43 0.57 2.4
+## Q05    5  0.32  0.43             0.34 0.66 2.5
+## Q08    8              0.83       0.74 0.26 1.1
+## Q17   17              0.75       0.68 0.32 1.5
+## Q11   11              0.75       0.69 0.31 1.5
+## Q09    9                    0.65 0.48 0.52 1.3
+## Q22   22                    0.65 0.46 0.54 1.2
+## Q23   23                    0.59 0.41 0.59 1.4
+## Q02    2       -0.34        0.54 0.41 0.59 1.7
+## Q19   19       -0.37        0.43 0.34 0.66 2.2
+## 
+##                        RC3  RC1  RC4  RC2
+## SS loadings           3.73 3.34 2.55 1.95
+## Proportion Var        0.16 0.15 0.11 0.08
+## Cumulative Var        0.16 0.31 0.42 0.50
+## Proportion Explained  0.32 0.29 0.22 0.17
+## Cumulative Proportion 0.32 0.61 0.83 1.00
+## 
+## Mean item complexity =  1.8
+## Test of the hypothesis that 4 components are sufficient.
+## 
+## The root mean square of the residuals (RMSR) is  0.06 
+##  with the empirical chi square  4006.15  with prob <  0 
+## 
+## Fit based upon off diagonal values = 0.96
 {% endhighlight %}
 According to the results and the [screenshot of questionnaires](#1-example-of-anxiety-questionnaire) above, we could find the questions that load highly on factor 1 are Q6 ("I have little experience of computers") with the highest loading of .80, Q18 ("R always crashes when I try to use it"), Q13 ("I worry I will cause irreparable damage ..."), Q7 ("All computers hate me"), Q14 ("Computers have minds of their own ..."), Q10 ("Computers are only for games"), and Q15 ("Computers are out to get me") with the lowest loading of .46. All these items seem to relate to using computers or R. Therefore we might label this factor *fear of computers*.
 
@@ -310,30 +275,8 @@ By setting `scores=TRUE`:
 
 {% highlight r %}
 pc5 <- principal(raqData, nfactors = 4, rotate = "oblimin", scores = TRUE)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "principal"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # head(pc5$scores)    # access scores by pc5$scores
 raqData <- cbind(raqData, pc5$scores)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in cbind(raqData, pc5$scores): object 'pc5' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # bind the factor scores to raqData dataframe for other use
 {% endhighlight %}
 
@@ -378,7 +321,45 @@ alpha(computerFear)
 
 
 {% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "alpha"
+## 
+## Reliability analysis   
+## Call: alpha(x = computerFear)
+## 
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+##       0.82      0.82    0.81       0.4 4.6 0.0052  3.4 0.71     0.39
+## 
+##  lower alpha upper     95% confidence boundaries
+## 0.81 0.82 0.83 
+## 
+##  Reliability if an item is dropped:
+##     raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r med.r
+## Q06      0.79      0.79    0.77      0.38 3.7   0.0063 0.0081  0.38
+## Q07      0.79      0.79    0.77      0.38 3.7   0.0063 0.0079  0.36
+## Q10      0.82      0.82    0.80      0.44 4.7   0.0053 0.0043  0.44
+## Q13      0.79      0.79    0.77      0.39 3.8   0.0062 0.0081  0.38
+## Q14      0.80      0.80    0.77      0.39 3.9   0.0060 0.0085  0.36
+## Q15      0.81      0.81    0.79      0.41 4.2   0.0056 0.0095  0.44
+## Q18      0.79      0.78    0.76      0.38 3.6   0.0064 0.0058  0.38
+## 
+##  Item statistics 
+##        n raw.r std.r r.cor r.drop mean   sd
+## Q06 2571  0.75  0.74  0.68   0.62  3.8 1.12
+## Q07 2571  0.75  0.73  0.68   0.62  3.1 1.10
+## Q10 2571  0.54  0.57  0.44   0.40  3.7 0.88
+## Q13 2571  0.72  0.73  0.67   0.61  3.6 0.95
+## Q14 2571  0.70  0.70  0.64   0.58  3.1 1.00
+## Q15 2571  0.64  0.64  0.54   0.49  3.2 1.01
+## Q18 2571  0.76  0.76  0.72   0.65  3.4 1.05
+## 
+## Non missing response frequency for each item
+##        1    2    3    4    5 miss
+## Q06 0.06 0.10 0.13 0.44 0.27    0
+## Q07 0.09 0.24 0.26 0.34 0.07    0
+## Q10 0.02 0.10 0.18 0.57 0.14    0
+## Q13 0.03 0.12 0.25 0.48 0.12    0
+## Q14 0.07 0.18 0.38 0.31 0.06    0
+## Q15 0.06 0.18 0.30 0.39 0.07    0
+## Q18 0.06 0.12 0.31 0.37 0.14    0
 {% endhighlight %}
 
 
