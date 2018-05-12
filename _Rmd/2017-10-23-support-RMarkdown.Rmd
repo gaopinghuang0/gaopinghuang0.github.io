@@ -133,7 +133,7 @@ esac
 ```
 
 ## Auto-rerun when .Rmd file changes
-It would be cumbersome if we need to manually rerun the above script whenener we make changes to an R Markdown file.
+It would be cumbersome if we need to manually rerun the above script whenever we make changes to an R Markdown file.
 
 Also, if we could automatically rerun the above script, then we could view the generated html in the browser (locally) immediately.
 
