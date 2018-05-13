@@ -378,7 +378,7 @@ confint(postHocs)
 ## 
 ## Linear Hypotheses:
 ##                           Estimate lwr    upr   
-## Low Dose - Placebo == 0    1.786   -0.324  3.895
+## Low Dose - Placebo == 0    1.786   -0.324  3.896
 ## High Dose - Placebo == 0   2.225    0.231  4.219
 ## High Dose - Low Dose == 0  0.439   -1.576  2.454
 {% endhighlight %}

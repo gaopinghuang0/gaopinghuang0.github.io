@@ -53,56 +53,56 @@ by(gogglesData$attractiveness, list(gogglesData$alcohol, gogglesData$gender), st
 ## : None
 ## : Female
 ##      nbr.val     nbr.null       nbr.na          min          max 
-##   8.00000000   0.00000000   0.00000000  55.00000000  70.00000000 
+##        8.000        0.000        0.000       55.000       70.000 
 ##        range          sum       median         mean      SE.mean 
-##  15.00000000 485.00000000  60.00000000  60.62500000   1.75191222 
+##       15.000      485.000       60.000       60.625        1.752 
 ## CI.mean.0.95          var      std.dev     coef.var 
-##   4.14261412  24.55357143   4.95515604   0.08173453 
+##        4.143       24.554        4.955        0.082 
 ## -------------------------------------------------------- 
 ## : 2 Pints
 ## : Female
 ##      nbr.val     nbr.null       nbr.na          min          max 
-##    8.0000000    0.0000000    0.0000000   50.0000000   70.0000000 
+##          8.0          0.0          0.0         50.0         70.0 
 ##        range          sum       median         mean      SE.mean 
-##   20.0000000  500.0000000   62.5000000   62.5000000    2.3145502 
+##         20.0        500.0         62.5         62.5          2.3 
 ## CI.mean.0.95          var      std.dev     coef.var 
-##    5.4730417   42.8571429    6.5465367    0.1047446 
+##          5.5         42.9          6.5          0.1 
 ## -------------------------------------------------------- 
 ## : 4 Pints
 ## : Female
 ##      nbr.val     nbr.null       nbr.na          min          max 
-##    8.0000000    0.0000000    0.0000000   50.0000000   70.0000000 
+##         8.00         0.00         0.00        50.00        70.00 
 ##        range          sum       median         mean      SE.mean 
-##   20.0000000  460.0000000   55.0000000   57.5000000    2.5000000 
+##        20.00       460.00        55.00        57.50         2.50 
 ## CI.mean.0.95          var      std.dev     coef.var 
-##    5.9115606   50.0000000    7.0710678    0.1229751 
+##         5.91        50.00         7.07         0.12 
 ## -------------------------------------------------------- 
 ## : None
 ## : Male
 ##      nbr.val     nbr.null       nbr.na          min          max 
-##    8.0000000    0.0000000    0.0000000   50.0000000   80.0000000 
+##         8.00         0.00         0.00        50.00        80.00 
 ##        range          sum       median         mean      SE.mean 
-##   30.0000000  535.0000000   67.5000000   66.8750000    3.6519931 
+##        30.00       535.00        67.50        66.88         3.65 
 ## CI.mean.0.95          var      std.dev     coef.var 
-##    8.6355914  106.6964286   10.3293963    0.1544583 
+##         8.64       106.70        10.33         0.15 
 ## -------------------------------------------------------- 
 ## : 2 Pints
 ## : Male
 ##      nbr.val     nbr.null       nbr.na          min          max 
-##    8.0000000    0.0000000    0.0000000   45.0000000   85.0000000 
+##         8.00         0.00         0.00        45.00        85.00 
 ##        range          sum       median         mean      SE.mean 
-##   40.0000000  535.0000000   67.5000000   66.8750000    4.4257263 
+##        40.00       535.00        67.50        66.88         4.43 
 ## CI.mean.0.95          var      std.dev     coef.var 
-##   10.4651798  156.6964286   12.5178444    0.1871827 
+##        10.47       156.70        12.52         0.19 
 ## -------------------------------------------------------- 
 ## : 4 Pints
 ## : Male
 ##      nbr.val     nbr.null       nbr.na          min          max 
-##    8.0000000    0.0000000    0.0000000   20.0000000   55.0000000 
+##          8.0          0.0          0.0         20.0         55.0 
 ##        range          sum       median         mean      SE.mean 
-##   35.0000000  285.0000000   32.5000000   35.6250000    3.8309711 
+##         35.0        285.0         32.5         35.6          3.8 
 ## CI.mean.0.95          var      std.dev     coef.var 
-##    9.0588071  117.4107143   10.8356225    0.3041578
+##          9.1        117.4         10.8          0.3
 {% endhighlight %}
 </div>
 
@@ -122,7 +122,7 @@ leveneTest(gogglesData$attractiveness, interaction(gogglesData$alcohol, gogglesD
 {% highlight text %}
 ## Levene's Test for Homogeneity of Variance (center = median)
 ##       Df F value Pr(>F)
-## group  5  1.4252 0.2351
+## group  5    1.43   0.24
 ##       42
 {% endhighlight %}
 We have F(5, 42) = 1.425, p = .235, which is indicative of the assumption being met.
@@ -199,12 +199,12 @@ Anova(gogglesModel, type="III")
 ## Anova Table (Type III tests)
 ## 
 ## Response: attractiveness
-##                Sum Sq Df   F value    Pr(>F)    
-## (Intercept)    163333  1 1967.0251 < 2.2e-16 ***
-## gender            169  1    2.0323    0.1614    
-## alcohol          3332  2   20.0654 7.649e-07 ***
-## gender:alcohol   1978  2   11.9113 7.987e-05 ***
-## Residuals        3488 42                        
+##                Sum Sq Df F value  Pr(>F)    
+## (Intercept)    163333  1 1967.03 < 2e-16 ***
+## gender            169  1    2.03    0.16    
+## alcohol          3332  2   20.07 7.6e-07 ***
+## gender:alcohol   1978  2   11.91 8.0e-05 ***
+## Residuals        3488 42                    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 {% endhighlight %}
@@ -276,18 +276,18 @@ summary.lm(gogglesModel)
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)        58.333      1.315  44.351  < 2e-16 ***
-## gender1            -1.875      1.315  -1.426 0.161382    
-## alcohol1           -2.708      0.930  -2.912 0.005727 ** 
-## alcohol2           -9.062      1.611  -5.626 1.37e-06 ***
-## gender1:alcohol1   -2.500      0.930  -2.688 0.010258 *  
-## gender1:alcohol2   -6.562      1.611  -4.074 0.000201 ***
+## (Intercept)         58.33       1.31   44.35  < 2e-16 ***
+## gender1             -1.88       1.31   -1.43   0.1614    
+## alcohol1            -2.71       0.93   -2.91   0.0057 ** 
+## alcohol2            -9.06       1.61   -5.63  1.4e-06 ***
+## gender1:alcohol1    -2.50       0.93   -2.69   0.0103 *  
+## gender1:alcohol2    -6.56       1.61   -4.07   0.0002 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 9.112 on 42 degrees of freedom
-## Multiple R-squared:  0.6111,	Adjusted R-squared:  0.5648 
-## F-statistic:  13.2 on 5 and 42 DF,  p-value: 9.609e-08
+## Residual standard error: 9.1 on 42 degrees of freedom
+## Multiple R-squared:  0.611,	Adjusted R-squared:  0.565 
+## F-statistic: 13.2 on 5 and 42 DF,  p-value: 9.61e-08
 {% endhighlight %}
 - **gender1**: This is the contrast for the main effect of gender
 - **alcohol1**: This contrast compares the no-alcohol group to the two alcohol groups.
@@ -325,9 +325,9 @@ pairwise.t.test(gogglesData$attractiveness, gogglesData$alcohol,
 ## 
 ## data:  gogglesData$attractiveness and gogglesData$alcohol 
 ## 
-##         None    2 Pints
-## 2 Pints 1.00000 -      
-## 4 Pints 0.00024 0.00011
+##         None  2 Pints
+## 2 Pints 1     -      
+## 4 Pints 2e-04 1e-04  
 ## 
 ## P value adjustment method: bonferroni
 {% endhighlight %}
@@ -353,9 +353,9 @@ summary(postHocs)
 ## 
 ## Linear Hypotheses:
 ##                        Estimate Std. Error t value Pr(>|t|)    
-## 2 Pints - None == 0      0.9375     3.2217   0.291    0.954    
-## 4 Pints - None == 0    -17.1875     3.2217  -5.335   <1e-05 ***
-## 4 Pints - 2 Pints == 0 -18.1250     3.2217  -5.626   <1e-05 ***
+## 2 Pints - None == 0       0.938      3.222    0.29     0.95    
+## 4 Pints - None == 0     -17.188      3.222   -5.33   <1e-05 ***
+## 4 Pints - 2 Pints == 0  -18.125      3.222   -5.63   <1e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## (Adjusted p values reported -- single-step method)
@@ -379,15 +379,15 @@ confint(postHocs)
 ## Fit: aov(formula = attractiveness ~ gender + alcohol + gender:alcohol, 
 ##     data = gogglesData)
 ## 
-## Quantile = 2.4294
+## Quantile = 2.4
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
-##                        Estimate lwr      upr     
-## 2 Pints - None == 0      0.9375  -6.8895   8.7645
-## 4 Pints - None == 0    -17.1875 -25.0145  -9.3605
-## 4 Pints - 2 Pints == 0 -18.1250 -25.9520 -10.2980
+##                        Estimate lwr     upr    
+## 2 Pints - None == 0      0.938   -6.887   8.762
+## 4 Pints - None == 0    -17.188  -25.012  -9.363
+## 4 Pints - 2 Pints == 0 -18.125  -25.950 -10.300
 {% endhighlight %}
 The Bonferroni and Tukey tests show the same pattern of results: when participants had drunk no alcohol or 2 pints of alcohol, they selected equally attractive mates. However, after 4 pints had been consumed, participants selected significantly less attractive mates than after both 2 pints (p < .001) and no alcohol (p < .001).
 </div>

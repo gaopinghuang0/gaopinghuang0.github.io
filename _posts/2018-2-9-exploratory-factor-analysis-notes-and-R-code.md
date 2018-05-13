@@ -117,7 +117,7 @@ cortest.bartlett(raqData)
 
 {% highlight text %}
 ## $chisq
-## [1] 19334.49
+## [1] 19334
 ## 
 ## $p.value
 ## [1] 0
@@ -143,7 +143,7 @@ det(raqMatrix)
 
 
 {% highlight text %}
-## [1] 0.0005271037
+## [1] 0.00053
 {% endhighlight %}
 This value is greater than the necessary value of 0.00001 (see section 17.5). As such, our determinant does not seem problematic. 
 
@@ -203,7 +203,7 @@ sum(large.resid)/nrow(residuals)
 
 
 {% highlight text %}
-## [1] 0.3596838
+## [1] 0.36
 {% endhighlight %}
 Some other residuals stats, such as the mean, are skipped here.
 
@@ -260,7 +260,7 @@ print.psych(pc3, cut = 0.3, sort = TRUE)
 ## Test of the hypothesis that 4 components are sufficient.
 ## 
 ## The root mean square of the residuals (RMSR) is  0.06 
-##  with the empirical chi square  4006.15  with prob <  0 
+##  with the empirical chi square  4006  with prob <  0 
 ## 
 ## Fit based upon off diagonal values = 0.96
 {% endhighlight %}
@@ -325,21 +325,21 @@ alpha(computerFear)
 ## Reliability analysis   
 ## Call: alpha(x = computerFear)
 ## 
-##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
-##       0.82      0.82    0.81       0.4 4.6 0.0052  3.4 0.71     0.39
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd
+##       0.82      0.82    0.81       0.4 4.6 0.0052  3.4 0.71
 ## 
 ##  lower alpha upper     95% confidence boundaries
 ## 0.81 0.82 0.83 
 ## 
 ##  Reliability if an item is dropped:
-##     raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r med.r
-## Q06      0.79      0.79    0.77      0.38 3.7   0.0063 0.0081  0.38
-## Q07      0.79      0.79    0.77      0.38 3.7   0.0063 0.0079  0.36
-## Q10      0.82      0.82    0.80      0.44 4.7   0.0053 0.0043  0.44
-## Q13      0.79      0.79    0.77      0.39 3.8   0.0062 0.0081  0.38
-## Q14      0.80      0.80    0.77      0.39 3.9   0.0060 0.0085  0.36
-## Q15      0.81      0.81    0.79      0.41 4.2   0.0056 0.0095  0.44
-## Q18      0.79      0.78    0.76      0.38 3.6   0.0064 0.0058  0.38
+##     raw_alpha std.alpha G6(smc) average_r S/N alpha se
+## Q06      0.79      0.79    0.77      0.38 3.7   0.0063
+## Q07      0.79      0.79    0.77      0.38 3.7   0.0063
+## Q10      0.82      0.82    0.80      0.44 4.7   0.0053
+## Q13      0.79      0.79    0.77      0.39 3.8   0.0062
+## Q14      0.80      0.80    0.77      0.39 3.9   0.0060
+## Q15      0.81      0.81    0.79      0.41 4.2   0.0056
+## Q18      0.79      0.78    0.76      0.38 3.6   0.0064
 ## 
 ##  Item statistics 
 ##        n raw.r std.r r.cor r.drop mean   sd
