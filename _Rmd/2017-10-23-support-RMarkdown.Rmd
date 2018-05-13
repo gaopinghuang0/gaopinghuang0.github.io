@@ -28,7 +28,7 @@ Here are the steps:
 3. Create an R Markdown post under `_Rmd`, such as `2017-10-23-test-markdown.Rmd`. At the beginning of this file, remember to add proper front matter for Jekyll.
 4. Run `KnitPost` to convert files. For simplicity, in the next section, I created a bash script to convert `_Rmd/*.Rmd` to `_post/*.md`.
 
-```R
+```{r eval=FALSE}
 # render_post.R
 # R script to convert RMarkdown into Jekyll markdown
 # Credit: http://brooksandrew.github.io/simpleblog/articles/blogging-with-r-markdown-and-jekyll-using-knitr/
@@ -86,24 +86,30 @@ KnitPost <- function(site.path='/pathToYourBlog/', overwriteAll=F, overwriteOne=
 ```
 
 ## Use bash script to call R script
-I created a bash script (called `convert_rmd.sh`) under the root level of the Jekyll directory, which is adapted from the second blog. It can convert a specific R Markdown file under `_Rmd/` to Jekyll markdown under `_posts/`.
+I created a bash script (called `convert_rmd.sh`) under the root level of the Jekyll directory, which is adapted from the second blog.
 
-The usage is 
+It can convert a specific R Markdown file under `_Rmd/` to Jekyll markdown under `_posts/`:
 ```bash
 $ ./convert_rmd.sh _Rmd/YYYY-mm-dd-title.Rmd
 ```
+Alternatively, it can convert all files under `_Rmd/` to `_posts/`:
+```bash
+$ ./convert_rmd.sh --all
+```
 
-To support Rscript with Cygwin on Windows, I added platform check at the bottom. Customize with your own path to Rscript.exe
+To support Rscript with Cygwin on Windows, I added platform check at the bottom. Customize with your own path to Rscript.exe.
+
+**Update**: I found that Rscript on Unix and Windows will generate different line endings and figures. It is recommended to use Unix-style line endings to be consistent with GitHub Pages. Otherwise, the carriage return (`\r`) on Windows would cause an extra line break in code block when rendering on GitHub Pages.
 
 ```bash
 #!/bin/bash
 # Credit: adapted from https://chepec.se/2014/07/16/knitr-jekyll
 
 function show_help {
-  echo "Usage: convert_rmd.sh [filename.Rmd]"
+  echo "Usage: convert_rmd.sh [filename.Rmd | --all] ..."
   echo "Knit posts, convert Rmd to jekyll blog"
-  # echo "-a convert all _Rmd/*.Rmd files to _posts/*.md (does not overwrite existing md)"
-  echo "convert a specific _Rmd/*.Rmd file to _posts/*.md (overwrite existing md)"
+  echo "<filename.Rmd>  convert a specific _Rmd/*.Rmd file to _posts/*.md (overwrite existing md)"
+  echo "--all           convert all _Rmd/*.Rmd files to _posts/*.md (overwrite existing md)"
 }
 
 if [ $# -eq 0 ] ; then
@@ -113,8 +119,14 @@ if [ $# -eq 0 ] ; then
 fi
 
 sitepath="./"
-rmdfile=$1
-cmd="source('./_Rmd/render_post.R'); KnitPost(site.path='$sitepath',overwriteOne='$rmdfile')"
+cmd="source('./_Rmd/render_post.R')"
+if [ "$1" = "--all" ]; then
+  echo "convert all _Rmd/*.Rmd to _posts/*.md"
+  cmd="$cmd; KnitPost(site.path='$sitepath', overwriteAll=T)"
+else
+  rmdfile=$1
+  cmd="$cmd; KnitPost(site.path='$sitepath', overwriteOne='$rmdfile')"
+fi
 
 # determine Rscript for different platforms; in particular, for Cygwin on Windows
 case "$(uname -s)" in
@@ -125,6 +137,7 @@ case "$(uname -s)" in
    CYGWIN*|MINGW32*|MSYS*)
      # echo 'Windows'
      /cygdrive/c/'Program Files'/R/R-3.3.0/bin/Rscript.exe -e "$cmd"
+     echo: "Warning: remember to convert line endings to Unix style before publish"
      ;;
    *)
      echo 'other OS' 
