@@ -17,7 +17,7 @@ This post covers my notes of **Exploratory Factor Analysis** methods using R fro
 
 ## 1. Example of Anxiety Questionnaire
 See the screenshot of the questionnaire (copied from the book):
-![questionnaire](/assets/figs/anxiety-questionnaire.png)
+![questionnaire](/assets/imgs/anxiety-questionnaire.png)
 
 The questionnaire was designed to predict how anxious a given individual would be about learning how to use R. What’s more, I wanted to know whether anxiety about R could be broken down into specific forms of anxiety. In other words, what latent variables contribute to anxiety about R?
 
