@@ -2,6 +2,7 @@
 layout: post
 title: "Python3 import and project layout"
 author: "Gaoping Huang"
+tags: Python
 use_math: false
 use_bootstrap: false
 ---
