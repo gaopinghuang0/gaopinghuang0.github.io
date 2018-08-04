@@ -2,6 +2,7 @@
 layout: post
 title: "JS fireworks animation (Part I)"
 author: "Gaoping Huang"
+tags: Javascript
 use_math: false
 use_bootstrap: false
 ---
