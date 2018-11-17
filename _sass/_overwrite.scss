@@ -50,3 +50,8 @@ footer {
 .post-title {
   font-size: 2.5rem;
 }
+
+// set smaller padding for the syntax highlight of each code block
+.highlight {
+  padding: 3px 6px;
+}
