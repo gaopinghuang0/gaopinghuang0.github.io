@@ -7,6 +7,8 @@ use_math: false
 use_bootstrap: false
 ---
 
+Update 11/4/2019: based on [A Typical directory structure for running tests using unittest](https://gist.github.com/tasdikrahman/2bdb3fb31136a3768fac)
+
 My preference is to use the following project layout, where `sub1` and `sub2` are self-contained packages. Only `main.py` and `tests/*.py` are allowed to access `sub1` and `sub2`, while `sub1` cannot access `sub2`, vice versa.
 ```
 project/
@@ -28,6 +30,14 @@ The beauty is that we have no need to hack the `sys.path`. In `tests/test_sub*.p
 from sub1.helper import helper
 from sub2.utils import some_func
 ```
+Then to run the test, use
+```bash
+$ python3 -m tests.test_sub1  # Note: not tests/test_sub1
+```
+Note that it must be run from the project dir, not within `tests` dir.
+
+
+### Running a test module
 Then to run the test, use
 ```bash
 $ python3 -m tests.test_sub1  # Note: not tests/test_sub1

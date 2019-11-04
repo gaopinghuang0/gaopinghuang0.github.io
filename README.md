@@ -6,6 +6,7 @@ Blog address: <https://gaopinghuang0.github.io>
 ## Getting Started
 Install dependencies:
 ```bash
+# ruby version 2.4.x
 $ gem install bundler  # bundler is a package manager for ruby, install it first if not yet
 $ bundle update & bundle install  # install based on Gemfile
 ```
