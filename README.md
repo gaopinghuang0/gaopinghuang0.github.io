@@ -4,14 +4,15 @@ This blog is used to share my knowledge in programming, statistics, and machine 
 Blog address: <https://gaopinghuang0.github.io>
 
 ## Getting Started
-Install dependencies:
+### Install dependencies:
+
+**Important for Windows**: install ruby version 2.3.3. Otherwise, the `eventmachine` gem is not ready for Ruby 2.4+. See https://github.com/jekyll/jekyll/issues/7221.  However, if I install ruby 2.3+, I need to install the devkit manually, which is not working on my current Windows 10 machine!!  Therefore, stop working on Windows (as of 11/7/2019). 
 ```bash
-# ruby version 2.4.x
 $ gem install bundler  # bundler is a package manager for ruby, install it first if not yet
 $ bundle update & bundle install  # install based on Gemfile
 ```
 
-Run server locally
+### Run server locally
 ```bash
 $ bundle exec jekyll serve  --livereload
 
