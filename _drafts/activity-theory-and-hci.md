@@ -9,7 +9,7 @@ use_bootstrap: false
 
 "Activity" is often undertheorized and used in an intuitive or commonsense way. *Activity Theory* (AT) is a more theoritcial way of looking at activity. Here, I briefly summarize the history of activity theory and its application in human-computer interaction (HCI).
 
-### Initial Theory
+### Initial Theory (1920s and 1930s)
 
 The initial version of activity theory originated from Russian/Soviet psychology of the 1920s and 1930s, notably Lev Vygotsky and Sergei Rubinshtein. The goal of activity theory is to understand the mental capabilities of a single individual.  Consiciousness is not isolated cognitive acts (decision making, classification, remembering)., it  and the unity of consciouseness and activity
 
