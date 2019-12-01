@@ -46,7 +46,7 @@ Several main principles are as follows:
 #### Yrjö Engeström's Activity System Model
 Leontiev's theory is mainly focusing on activities of individual human beings. Engeström, however, proposed a model for collective activity called "activity system model". 
 
-Two significant steps are extended to Leontiev's theory. First, the subject-object interaction includes a third element: "community". These three elements form a three-way interaction; namely, a down-pointing triangle, as shown in the diagram below. Second, each of the three interactions is mediated by a special type of means. Specifically, the instrument/tool is a mediator for subject-object interaction (same as Leontiev), the rules are for subject-community interaction, and division of labor are for community-object interaction.
+Two significant steps are extended to Leontiev's theory. First, the subject-object interaction includes a third element: "community". These three elements form a three-way interaction; namely, a down-pointing triangle, as shown in the center of the diagram below. Second, each of the three interactions is mediated by a special type of means. Specifically, the instrument/tool is a mediator for subject-object interaction (same as Leontiev), the rules are for subject-community interaction, and division of labor are for community-object interaction. All the elements and means form a large, up-pointing triangle.
 ![activity-system-model](/assets/imgs/activity-system-model.png)
 (Figure 2. Activity system model. Image credit: Kaptelinin and Nardi, 2012)
 
@@ -57,8 +57,8 @@ The first concept from activity theory is the "subject-object" interaction, whic
 
 The second concept is the hierarchical structure of human activity. The use of computer (or other technology) is often at the operational layer (bottom layer of Figure 1). It is suggested to relate such operational aspects to higher layers, such as meaningful goals and the needs and motives of technology users. Such an extension is consistent with the need of the field to move “from human factors to human actors” (Bannon, 1995).
 
-### Conclusion
-Initially, I thought I could learn some concrete solutions from activity theory (as a predictive model). However, after reading the book by Kaptelinin and Nardi, I got to know that activity theory is not such a framework. To truly leverage this theory, I need to combine it with other (more concrete) frameworks/theories. If time, I will find some case studies or examples along this line.
+### Final Remark
+Initially, I thought I could learn some concrete solutions from activity theory (as a predictive model). However, after reading the book by Kaptelinin and Nardi (2012), I got to know that activity theory is not such a framework. To truly leverage this theory, some  more concrete frameworks/theories should be combined with it. If time, I will find some case studies or examples along this line.
 
 ### References
 1. Bannon, L. J. (1995). From human factors to human actors: The role of psychology and human-computer interaction studies in system design. In Readings in Human–Computer Interaction (pp. 205-214). Morgan Kaufmann.
