@@ -15,6 +15,8 @@ $ gem install bundler  # bundler is a package manager for ruby, install it first
 $ bundle update & bundle install  # install based on Gemfile
 ```
 
+For Ubuntu, check the [Jekyll on Ubuntu](https://jekyllrb.com/docs/installation/ubuntu/).
+
 ### Run server locally
 ```bash
 $ bundle exec jekyll serve  --livereload
