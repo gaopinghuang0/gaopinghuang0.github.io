@@ -14,6 +14,11 @@ This post covers several usages for a cross-platform command: [when-changed](htt
 $ pip install https://github.com/joh/when-changed/archive/master.zip
 ```
 
+Update (10/23/2020): on Linux, `pip install ...` will put the script into `~/.local/bin` which is not in the default $PATH. Add the below line into `.bashrc` file.
+```sh
+$ export PATH="$HOME/.local/bin:$PATH"
+```
+
 ## Basic Usage and Options
 ```bash
 $ when-changed [-vr1s] FILE COMMAND...
@@ -28,13 +33,13 @@ $ when-changed [-vr1s] FILE COMMAND...
 ## Sample Usages
 The option `-v` is recommended to add to every usage below:
 ```bash
-#1
+#1. Watch a single FILE and exec COMMAND
 $ when-changed FILE COMMAND...
-#2
+#2. Watch multiple files and exec COMMAND
 $ when-changed FILE [FILE ...] -c COMMAND
-#3. wildcard is supported, which will be auto expanded as #2
+#3. Wildcard is supported, which will be auto expanded as #2
 $ when-changed FILE-with-wildcard -c COMMAND
-#4
+#4. Watch a directory and exec COMMAND
 $ when-changed directory -c COMMAND
 
 #5. `%f` gets replaced with the file that changed:
