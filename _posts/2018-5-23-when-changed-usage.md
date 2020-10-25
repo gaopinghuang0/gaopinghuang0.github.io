@@ -14,7 +14,7 @@ This post covers several usages for a cross-platform command: [when-changed](htt
 $ pip install https://github.com/joh/when-changed/archive/master.zip
 ```
 
-Update (10/23/2020): on Linux, `pip install ...` will put the script into `~/.local/bin` which is not in the default $PATH. Add the below line into `.bashrc` file.
+Updated (10/23/2020): On Linux, `pip install ...` will put the script into `~/.local/bin` which is not in the default $PATH. Add the below line into `.bashrc` file.
 ```sh
 export PATH="$HOME/.local/bin:$PATH"
 ```

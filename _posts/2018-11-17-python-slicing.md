@@ -8,13 +8,14 @@ use_bootstrap: false
 ---
 
 Sometimes, we need to implement slicing functionality in our own class. Below is an example using slicing to get the installed Python version (copied from [six.py](https://github.com/benjaminp/six/blob/master/six.py), a Python2 and 3 compatibility library):
+
 ```python
 import sys
 PY34 = sys.version_info[0:2] >= (3,4)
 ```
-Here, `sys.version_info` contains (major, minor, micro, ...). By using `[0:2]`, we get a tuple (major, minor), such as (2, 7).
+Here, `sys.version_info` contains (major, minor, micro, ...). By using `[0:2]`, we get a tuple (major, minor), such as (2, 7) for Python2.7.3.
 
-To support slicing, we need to use `object.__getitem(self, key)` method. The `key` could be an integer or slice objects. For example,
+To support slicing, we need to use `object.__getitem__(self, key)` method. The `key` could be an integer or slice objects. For example,
 ```python
 >>> class A(object):
 ...   def __getitem__(self, key):

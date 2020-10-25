@@ -11,12 +11,11 @@ excerpt_separator: <!--more-->
 最近遇到一道面试题：
 > 将一串数字表示成千分位格式，例如 10000000000.12，转换成 10,000,000,000.12。
 
-如果直接用字符串拼接，这道题还是挺简单的。但如果要求用正则表达式，我就没了思路。后来在网上搜了一下，才知道需要用正向预查。
+如果直接用字符串拼接，这道题还是挺简单的。但如果要求用正则表达式，我就没了思路。后来在网上搜了一下，才知道需要用正向预查。网上的解法比较多，但有些只考虑了整数部分，有些只考虑了两位小数，不够通用。这里把这些方法分析一下，总结出一个自己满意的版本。
 
-<!-- The content above will be `post.excerpts` -->
+<!-- The content above `excerpt_separator` will become `post.excerpts` -->
 <!--more-->
 
-网上的解法比较多，但有些只考虑了整数部分，有些只考虑了两位小数，不够通用。这里把这些方法分析一下，总结出一个自己满意的版本。
 
 ### 处理整数
 首先看一下怎么处理整数部分。这里要用到“[正向预查](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions)” (Lookahead assertion)或者叫“向前断言”。格式是`x(?=y)`，表示 x 被 y 跟随时匹配 x。举个例子：

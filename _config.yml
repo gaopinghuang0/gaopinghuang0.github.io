@@ -1,24 +1,27 @@
 # Permalinks
-permalink:      /:year/:month/:day/:title
+permalink: /:year/:month/:day/:title
 
 # Setup
-title:          Gaoping Huang's Blog
-paginate:       10
-baseurl:        ''
-url:            "https://gaopinghuang0.github.io"
+title: Gaoping Huang's Blog
+paginate: 10
+baseurl: ""
+url: "https://gaopinghuang0.github.io"
 
 # Assets
 sass:
-  sass_dir:     _sass
-  style:        :compressed
+  sass_dir: _sass
+  style: :compressed
 
 # Build settings
-markdown:       kramdown
+markdown: kramdown
 
 # About
 author:
-  name:         Gaoping Huang
-  email:        gaopinghuang@gmail.com
+  name: Gaoping Huang
+  email: gaopinghuang@gmail.com
+
+# Exclude
+exclude: ["_Rmd"]
 
 # Gems
 plugins:

@@ -8,7 +8,7 @@ use_bootstrap: true
 ---
 
 ```{r, echo=FALSE}
-# set the prefix of the generated R figures
+# set the prefix of the generated R figures to avoid name conflicts
 knitr::opts_chunk$set(fig.path='assets/Rfig/exploratory-factor-')
 ```
 
@@ -17,28 +17,87 @@ This post covers my notes of **Exploratory Factor Analysis** methods using R fro
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+## 1. What is Exploratory Factor Analysis?
+> People often try to measure things that cannot directly be measured (so-called **latent variables**). For example, management researchers might be interested in measuring 'burnout', which is when someone who has been working very hard on a project for a prolonged period of time suddenly finds themselves devoid of motivation and inspiration.
 
-## 1. Example of Anxiety Questionnaire
-See the screenshot of the questionnaire (copied from the book):
+> You cannot measure burnout directly: it has many facets. However, you can measure different aspects of burnout: you could get some idea of motivation, stress levels, and so on. Having done this, it would be helpful to know whether these differences really do reflect a single variable. Put another way, are these different variables driven by the same underlying variable? Factor analysis (and Principal Components Analysis (PCA)) is a technique for identifying groups or clusters of variables.
+
+## 2. Factors
+First, let's understand some keywords, including factors, loading, and communality.
+
+### What is a factor?
+> If we measure several variables, or ask someone several questions about themselves, the correlation between each pair of variables (or questions) can be arranged in what’s known as an *R-matrix*. An R-matrix is just a correlation matrix: a table of correlation coefficients between variables. The diagonal elements of an R-matrix are all ones because each variable will correlate perfectly with itself. The off-diagonal elements are the correlation coefficients between pairs of variables, or questions. The existence of clusters of large correlation coefficients between subsets of variables suggests that those variables could be measuring aspects of the same underlying dimension. These underlying dimensions are known as **factors** (or latent variables). By reducing a data set from a group of interrelated variables into a smaller set of factors, factor analysis achieves parsimony by explaining the maximum amount of common variance in a correlation matrix using the smallest number of explanatory constructs.
+
+In other words, **factors** are a small set of clusters of interrelated variables that can explain most of the common variance.  Also, factors here should not be confused with independent variables in factorial ANOVA.
+
+### What is a factor loading?
+If we visualize factors as classification axes, then each variable can be plotted along with each classification axis. For example, two factors (e.g., "Sociability" and "Consideration") can be plotted as a 2D graph, while six variables (e.g., "Selfish") can be put at corresponding positions on the graph, as shown below (copied from Figure 17.3). Such factor plot can be drawn after the factors have been extracted via techniques described in later section (e.g., PCA).
+
+<img width="450" alt="factor-plot" style="margin:auto;" src="/assets/imgs/exploratory-analysis-figure17.3.png">
+
+A **factor loading** means the coordinate of a variable along a classification axis. The factor loading can be thought of as the Pearson correlation between a factor and a variable. In other words, the relationship can be represented as a math equation below:
+
+$Factor_i = b_1 Variable_{1i} + b_2 Variable_{2i} +...+ b_n Variable_{ni} + \varepsilon_i $
+
+The $b$s in the equation represent the factor loadings.
+
+On the other hand, we can represent each variable with respect to a set of factors ($Factor_j$).
+
+$Variable_i - Mean_i = l_{i1} Factor_1 + ... + l_{ik}Factor_k + \varepsilon_i$
+
+Or in matrix terms, we have
+
+$X - \mu = LF + \varepsilon$
+
+Here, $L$ is the *loading matrix*.
+
+
+### What is communality?
+> The total variance for a particular variable will have two components: some of it will be shared with other variables or measures (**common variance**) and some of it will be specific to that measure (**unique variance**). We tend to use the term *unique variance* to refer to variance that can be reliably attributed to only one measure. However, there is also variance that is specific to one measure but not reliably so; this variance is called **error** or **random variance**. The proportion of common variance present in a variable is known as the **communality**. As such, a variable that has no specific variance (or random variance) would have a communality of 1; a variable that shares none of its variance with any other variable would have a communality of 0.
+
+> In factor analysis we are interested in finding common underlying dimensions within the data and so we are primarily interested only in the common variance. Therefore, when we run a factor analysis it is fundamental that we know how much of the variance present in our data is common variance.
+
+> *This presents us with a logical impasse*: to do the factor analysis we need to know the proportion of common variance present in the data, yet the only way to find out the extent of the common variance is by carrying out a factor analysis.
+
+#### How to compute communality?
+> There are various methods of estimating communalities, but the most widely used (including **alpha factoring**) is to use the squared multiple correlation (SMC) of each variable with all others. So, for the popularity data, imagine you ran a multiple regression using one measure (Selfish) as the outcome and the other five measures as predictors: the resulting multiple R2 (see section 7.6.2) would be used as an estimate of the communality for the variable Selfish. This second approach is used in factor analysis.
+
+### Factor analysis vs. principal components analysis (PCA)
+These two approaches differ in how to estimate communality.
+> Simplistically, though, factor analysis derives a mathematical model from which factors are estimated, whereas PCA merely decomposes the original data into a set of linear variates 
+
+**However, this chapter uses the theory of PCA rather than factor analysis** because PCA is a psychometrically sound procedure and conceptually less complex than factor analysis.
+
+There are different arguments about whether the two techniques provide different results to the same problem. For example, 
+> Guadagnoli and Velicer (1988) concluded that the solutions generated from PCA differ little from those derived from factor analysis techniques. 
+On the other hand,
+> Stevens (2002) summarizes the evidence and concludes that, with 30 or more variables and communalities greater than .7 for all variables, different solutions are unlikely; however, with fewer than 20 variables and any low communalities (< .4), differences can occur.
+
+### Factor rotation to improve interpretation
+Once factors have been extracted, it is possible to calculate the factor loading. 
+> Generally, you will find that most variables have high loadings on the most important factor and small loadings on all other factors. This characteristic makes interpretation difficult, and so a technique called **factor rotation** is used to discriminate between factors. If a factor is a classification axis along which variables can be plotted, then factor rotation effectively rotates these factor axes such that variables are loaded maximally on only one factor.
+
+There are two types of rotation that can be done. The first is **orthogonal rotation** while the other is **oblique rotation**. The difference with oblique rotation is that the factors are allowed to correlate.
+
+## 3. Example of Anxiety Questionnaire
+One usage of factor analysis is to develop questionnaires. If we want to measure something, we need to ensure that the questions asked relate to the construct that we intend to measure.
+
+Below is the screenshot of a questionnaire (copied from the book):
 ![questionnaire](/assets/imgs/anxiety-questionnaire.png)
 
-The questionnaire was designed to predict how anxious a given individual would be about learning how to use R. What’s more, I wanted to know whether anxiety about R could be broken down into specific forms of anxiety. In other words, what latent variables contribute to anxiety about R?
+> The questionnaire was designed to predict how anxious a given individual would be about learning how to use R. What’s more, I wanted to know whether anxiety about R could be broken down into specific forms of anxiety. In other words, what latent variables contribute to anxiety about R?
 
 ### Sample Size
-With a little help from a few lecturer friends I collected 2571 completed questionnaires (at this point it should become apparent that this example is fictitious).
+> With a little help from a few lecturer friends I collected 2571 completed questionnaires (at this point it should become apparent that this example is fictitious).
 
-...In short, their study indicated that as communalities become lower the importance of sample size increases. With all communalities above .6, relatively small samples (less than 100) may be perfectly adequate. With communalities in the .5 range, samples between 100 and 200 can be good enough provided there are relatively few factors each with only a small number of indicator variables.
+> ...In short, their study indicated that as communalities become lower the importance of sample size increases. With all communalities above .6, relatively small samples (less than 100) may be perfectly adequate. With communalities in the .5 range, samples between 100 and 200 can be good enough provided there are relatively few factors each with only a small number of indicator variables.
 
 ### Correlations between variables
-The first thing to do when conducting a factor analysis or principal components analysis is to look at the correlations of the variables.
+The first thing to do when conducting a factor analysis or PCA is to look at the correlations of the variables. The correlations between variables can be checked using the `cor()` function to create a correlation matrix of all variables.
 
-The correlations between variables can be checked using the `cor()` function to create a correlation matrix of all variables.
-
-There are essentially two potential problems: (1) correlations that are not high enough; and (2) correlations that are too high.
-
-We can test for the first problem by visually scanning the correlation matrix and looking for correlations below about .3: if any variables have lots of correlations below this value then consider excluding them.
-
-For the second problem, if you have reason to believe that the correlation matrix has multicollinearity then you could look through the correlation matrix for variables that correlate very highly (R > .8) and consider eliminating one of the variables (or more) before proceeding.
+There are essentially two potential problems:
+1. _Correlations are not high enough._ We can test this problem by visually scanning the correlation matrix and looking for correlations below about .3: if any variables have lots of correlations below this value then consider excluding them.
+2. _Correlations are too high._ For this problem, if you have reason to believe that the correlation matrix has multicollinearity then you could look through the correlation matrix for variables that correlate very highly (R > .8) and consider eliminating one of the variables (or more) before proceeding.
 
 ### Packages to be used
 ```{r }
@@ -52,13 +111,14 @@ library(psych)
 raqData<-read.delim("../assets/Rdata/raq.dat", header = TRUE)
 head(raqData)   # only show 6 rows
 raqMatrix <- cor(raqData)
-head(round(raqMatrix, 2))
+head(round(raqMatrix, 2))  # again, only six rows of the matrix are shown.
 ```
-If got warning message about non-positive definite matrix, then check the R's Souls' Tip 17.1.
+(If got warning message about non-positive definite matrix, then check the R's Souls' Tip 17.1.)
 
-First, scan the matrix for correlations greater than .3, then look for variables that only have a small number of correlations greater than this value. Then scan the correlation coefficients themselves and look for any greater than .9. If any are found then you should be aware that a problem could arise because of multicollinearity in the data.
+Now it's time to check the correlations. First, scan the matrix for correlations greater than .3, then look for variables that only have a small number of correlations greater than this value. Then scan the correlation coefficients themselves and look for any greater than .9. If any are found then you should be aware that a problem could arise because of multicollinearity in the data.
 
-Then, run Bartlett's test on the correlation matrix by using `cortest.bartlett()` from `psych` package.
+Then, to inspect the correlation matrix, we should run Bartlett's test by using `cortest.bartlett()` from `psych` package. We can run this test either on the raw data or on the correlation matrix. Both will give you the same results below.
+
 ```{r bartlett}
 cortest.bartlett(raqData)
 # or
@@ -66,7 +126,9 @@ cortest.bartlett(raqData)
 ```
 For these data, Bartlett’s test is highly significant, χ2(253) = 19,334, p < .001, and therefore factor analysis is appropriate.
 
-Then, we could get the determinant:
+Alternatively, we can use the Kaiser–Meyer–Olkin (KMO) measure of sampling adequacy (i.e., to determine if the sample size is big enough). However, I choose to skip this part to keep this post concise.
+
+Finally, we could get the determinant:
 ```{r determinant}
 det(raqMatrix)
 ```
@@ -147,7 +209,7 @@ raqData <- cbind(raqData, pc5$scores)
 ### Reliability analysis
 If you’re using factor analysis to validate a questionnaire, it is useful to check the reliability of your scale.
 
-Reliability means that a measure (or in this case questionnaire) should consistently reflect the construct that it is measuring. One way to think of this is that, other things being equal, a person should get the same score on a questionnaire if they complete it at two different points in time (we have already discovered that this is called *test–retest reliability*).
+> Reliability means that a measure (or in this case questionnaire) should consistently reflect the construct that it is measuring. One way to think of this is that, other things being equal, a person should get the same score on a questionnaire if they complete it at two different points in time (we have already discovered that this is called *test–retest reliability*).
 
 The simplest way to do this in practice is to use `split-half reliability`. This method randomly splits the data set into two. A score for each participant is then calculated based on each half of the scale. If a scale is very reliable a person’s score on one half of the scale should be the same (or similar) to their score on the other half: two halves should correlate very highly.
 
@@ -190,16 +252,7 @@ The analysis of other three factors is very similar and thus skipped.
 
 #### Report reliability analysis (skipped)
 
-## 2. Questions
+## Conclusion
+Factor analysis is a technique to identify the smaller set of clusters of variables to represent the whole variance. This chapter actually uses PCA, which may have little difference from factor analysis. I skipped some details to avoid making the post too long. Also, you can check [Exploratory factor analysis on Wikipedia](https://en.wikipedia.org/wiki/Exploratory_factor_analysis) for more resources.
 
-* What is loading?
-
-* How to compute loading?
-
-* What is a Factor?
-
-* What is communality?
-
-* How to compute communality?
-
-
+Thanks for reading and feel free to correct me if I made any mistake.

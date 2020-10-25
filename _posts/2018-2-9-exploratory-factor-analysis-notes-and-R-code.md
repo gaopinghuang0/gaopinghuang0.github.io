@@ -14,28 +14,87 @@ This post covers my notes of **Exploratory Factor Analysis** methods using R fro
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+## 1. What is Exploratory Factor Analysis?
+> People often try to measure things that cannot directly be measured (so-called **latent variables**). For example, management researchers might be interested in measuring 'burnout', which is when someone who has been working very hard on a project for a prolonged period of time suddenly finds themselves devoid of motivation and inspiration.
 
-## 1. Example of Anxiety Questionnaire
-See the screenshot of the questionnaire (copied from the book):
+> You cannot measure burnout directly: it has many facets. However, you can measure different aspects of burnout: you could get some idea of motivation, stress levels, and so on. Having done this, it would be helpful to know whether these differences really do reflect a single variable. Put another way, are these different variables driven by the same underlying variable? Factor analysis (and Principal Components Analysis (PCA)) is a technique for identifying groups or clusters of variables.
+
+## 2. Factors
+First, let's understand some keywords, including factors, loading, and communality.
+
+### What is a factor?
+> If we measure several variables, or ask someone several questions about themselves, the correlation between each pair of variables (or questions) can be arranged in what’s known as an *R-matrix*. An R-matrix is just a correlation matrix: a table of correlation coefficients between variables. The diagonal elements of an R-matrix are all ones because each variable will correlate perfectly with itself. The off-diagonal elements are the correlation coefficients between pairs of variables, or questions. The existence of clusters of large correlation coefficients between subsets of variables suggests that those variables could be measuring aspects of the same underlying dimension. These underlying dimensions are known as **factors** (or latent variables). By reducing a data set from a group of interrelated variables into a smaller set of factors, factor analysis achieves parsimony by explaining the maximum amount of common variance in a correlation matrix using the smallest number of explanatory constructs.
+
+In other words, **factors** are a small set of clusters of interrelated variables that can explain most of the common variance.  Also, factors here should not be confused with independent variables in factorial ANOVA.
+
+### What is a factor loading?
+If we visualize factors as classification axes, then each variable can be plotted along with each classification axis. For example, two factors (e.g., "Sociability" and "Consideration") can be plotted as a 2D graph, while six variables (e.g., "Selfish") can be put at corresponding positions on the graph, as shown below (copied from Figure 17.3). Such factor plot can be drawn after the factors have been extracted via techniques described in later section (e.g., PCA).
+
+<img width="450" alt="factor-plot" style="margin:auto;" src="/assets/imgs/exploratory-analysis-figure17.3.png">
+
+A **factor loading** means the coordinate of a variable along a classification axis. The factor loading can be thought of as the Pearson correlation between a factor and a variable. In other words, the relationship can be represented as a math equation below:
+
+$Factor_i = b_1 Variable_{1i} + b_2 Variable_{2i} +...+ b_n Variable_{ni} + \varepsilon_i $
+
+The $b$s in the equation represent the factor loadings.
+
+On the other hand, we can represent each variable with respect to a set of factors ($Factor_j$).
+
+$Variable_i - Mean_i = l_{i1} Factor_1 + ... + l_{ik}Factor_k + \varepsilon_i$
+
+Or in matrix terms, we have
+
+$X - \mu = LF + \varepsilon$
+
+Here, $L$ is the *loading matrix*.
+
+
+### What is communality?
+> The total variance for a particular variable will have two components: some of it will be shared with other variables or measures (**common variance**) and some of it will be specific to that measure (**unique variance**). We tend to use the term *unique variance* to refer to variance that can be reliably attributed to only one measure. However, there is also variance that is specific to one measure but not reliably so; this variance is called **error** or **random variance**. The proportion of common variance present in a variable is known as the **communality**. As such, a variable that has no specific variance (or random variance) would have a communality of 1; a variable that shares none of its variance with any other variable would have a communality of 0.
+
+> In factor analysis we are interested in finding common underlying dimensions within the data and so we are primarily interested only in the common variance. Therefore, when we run a factor analysis it is fundamental that we know how much of the variance present in our data is common variance.
+
+> *This presents us with a logical impasse*: to do the factor analysis we need to know the proportion of common variance present in the data, yet the only way to find out the extent of the common variance is by carrying out a factor analysis.
+
+#### How to compute communality?
+> There are various methods of estimating communalities, but the most widely used (including **alpha factoring**) is to use the squared multiple correlation (SMC) of each variable with all others. So, for the popularity data, imagine you ran a multiple regression using one measure (Selfish) as the outcome and the other five measures as predictors: the resulting multiple R2 (see section 7.6.2) would be used as an estimate of the communality for the variable Selfish. This second approach is used in factor analysis.
+
+### Factor analysis vs. principal components analysis (PCA)
+These two approaches differ in how to estimate communality.
+> Simplistically, though, factor analysis derives a mathematical model from which factors are estimated, whereas PCA merely decomposes the original data into a set of linear variates 
+
+**However, this chapter uses the theory of PCA rather than factor analysis** because PCA is a psychometrically sound procedure and conceptually less complex than factor analysis.
+
+There are different arguments about whether the two techniques provide different results to the same problem. For example, 
+> Guadagnoli and Velicer (1988) concluded that the solutions generated from PCA differ little from those derived from factor analysis techniques. 
+On the other hand,
+> Stevens (2002) summarizes the evidence and concludes that, with 30 or more variables and communalities greater than .7 for all variables, different solutions are unlikely; however, with fewer than 20 variables and any low communalities (< .4), differences can occur.
+
+### Factor rotation to improve interpretation
+Once factors have been extracted, it is possible to calculate the factor loading. 
+> Generally, you will find that most variables have high loadings on the most important factor and small loadings on all other factors. This characteristic makes interpretation difficult, and so a technique called **factor rotation** is used to discriminate between factors. If a factor is a classification axis along which variables can be plotted, then factor rotation effectively rotates these factor axes such that variables are loaded maximally on only one factor.
+
+There are two types of rotation that can be done. The first is **orthogonal rotation** while the other is **oblique rotation**. The difference with oblique rotation is that the factors are allowed to correlate.
+
+## 3. Example of Anxiety Questionnaire
+One usage of factor analysis is to develop questionnaires. If we want to measure something, we need to ensure that the questions asked relate to the construct that we intend to measure.
+
+Below is the screenshot of a questionnaire (copied from the book):
 ![questionnaire](/assets/imgs/anxiety-questionnaire.png)
 
-The questionnaire was designed to predict how anxious a given individual would be about learning how to use R. What’s more, I wanted to know whether anxiety about R could be broken down into specific forms of anxiety. In other words, what latent variables contribute to anxiety about R?
+> The questionnaire was designed to predict how anxious a given individual would be about learning how to use R. What’s more, I wanted to know whether anxiety about R could be broken down into specific forms of anxiety. In other words, what latent variables contribute to anxiety about R?
 
 ### Sample Size
-With a little help from a few lecturer friends I collected 2571 completed questionnaires (at this point it should become apparent that this example is fictitious).
+> With a little help from a few lecturer friends I collected 2571 completed questionnaires (at this point it should become apparent that this example is fictitious).
 
-...In short, their study indicated that as communalities become lower the importance of sample size increases. With all communalities above .6, relatively small samples (less than 100) may be perfectly adequate. With communalities in the .5 range, samples between 100 and 200 can be good enough provided there are relatively few factors each with only a small number of indicator variables.
+> ...In short, their study indicated that as communalities become lower the importance of sample size increases. With all communalities above .6, relatively small samples (less than 100) may be perfectly adequate. With communalities in the .5 range, samples between 100 and 200 can be good enough provided there are relatively few factors each with only a small number of indicator variables.
 
 ### Correlations between variables
-The first thing to do when conducting a factor analysis or principal components analysis is to look at the correlations of the variables.
+The first thing to do when conducting a factor analysis or PCA is to look at the correlations of the variables. The correlations between variables can be checked using the `cor()` function to create a correlation matrix of all variables.
 
-The correlations between variables can be checked using the `cor()` function to create a correlation matrix of all variables.
-
-There are essentially two potential problems: (1) correlations that are not high enough; and (2) correlations that are too high.
-
-We can test for the first problem by visually scanning the correlation matrix and looking for correlations below about .3: if any variables have lots of correlations below this value then consider excluding them.
-
-For the second problem, if you have reason to believe that the correlation matrix has multicollinearity then you could look through the correlation matrix for variables that correlate very highly (R > .8) and consider eliminating one of the variables (or more) before proceeding.
+There are essentially two potential problems:
+1. _Correlations are not high enough._ We can test this problem by visually scanning the correlation matrix and looking for correlations below about .3: if any variables have lots of correlations below this value then consider excluding them.
+2. _Correlations are too high._ For this problem, if you have reason to believe that the correlation matrix has multicollinearity then you could look through the correlation matrix for variables that correlate very highly (R > .8) and consider eliminating one of the variables (or more) before proceeding.
 
 ### Packages to be used
 
@@ -55,59 +114,53 @@ head(raqData)   # only show 6 rows
 
 
 {% highlight text %}
-##   Q01 Q02 Q03 Q04 Q05 Q06 Q07 Q08 Q09 Q10 Q11 Q12 Q13 Q14 Q15 Q16 Q17 Q18
-## 1   4   5   2   4   4   4   3   5   5   4   5   4   4   4   4   3   5   4
-## 2   5   5   2   3   4   4   4   4   1   4   4   3   5   3   2   3   4   4
-## 3   4   3   4   4   2   5   4   4   4   4   3   3   4   2   4   3   4   3
-## 4   3   5   5   2   3   3   2   4   4   2   4   4   4   3   3   3   4   2
-## 5   4   5   3   4   4   3   3   4   2   4   4   3   3   4   4   4   4   3
-## 6   4   5   3   4   2   2   2   4   2   3   4   2   3   3   1   4   3   1
-##   Q19 Q20 Q21 Q22 Q23
-## 1   3   4   4   4   1
-## 2   3   2   2   2   4
-## 3   5   2   3   4   4
-## 4   4   2   2   2   3
-## 5   3   2   4   2   2
-## 6   5   1   3   5   2
+##   Q01 Q02 Q03 Q04 Q05 Q06 Q07 Q08 Q09 Q10 Q11 Q12 Q13 Q14 Q15 Q16 Q17 Q18 Q19
+## 1   4   5   2   4   4   4   3   5   5   4   5   4   4   4   4   3   5   4   3
+## 2   5   5   2   3   4   4   4   4   1   4   4   3   5   3   2   3   4   4   3
+## 3   4   3   4   4   2   5   4   4   4   4   3   3   4   2   4   3   4   3   5
+## 4   3   5   5   2   3   3   2   4   4   2   4   4   4   3   3   3   4   2   4
+## 5   4   5   3   4   4   3   3   4   2   4   4   3   3   4   4   4   4   3   3
+## 6   4   5   3   4   2   2   2   4   2   3   4   2   3   3   1   4   3   1   5
+##   Q20 Q21 Q22 Q23
+## 1   4   4   4   1
+## 2   2   2   2   4
+## 3   2   3   4   4
+## 4   2   2   2   3
+## 5   2   4   2   2
+## 6   1   3   5   2
 {% endhighlight %}
 
 
 
 {% highlight r %}
 raqMatrix <- cor(raqData)
-head(round(raqMatrix, 2))
+head(round(raqMatrix, 2))  # again, only six rows of the matrix are shown.
 {% endhighlight %}
 
 
 
 {% highlight text %}
-##       Q01   Q02   Q03   Q04   Q05   Q06   Q07   Q08   Q09   Q10   Q11
-## Q01  1.00 -0.10 -0.34  0.44  0.40  0.22  0.31  0.33 -0.09  0.21  0.36
-## Q02 -0.10  1.00  0.32 -0.11 -0.12 -0.07 -0.16 -0.05  0.31 -0.08 -0.14
-## Q03 -0.34  0.32  1.00 -0.38 -0.31 -0.23 -0.38 -0.26  0.30 -0.19 -0.35
-## Q04  0.44 -0.11 -0.38  1.00  0.40  0.28  0.41  0.35 -0.12  0.22  0.37
-## Q05  0.40 -0.12 -0.31  0.40  1.00  0.26  0.34  0.27 -0.10  0.26  0.30
-## Q06  0.22 -0.07 -0.23  0.28  0.26  1.00  0.51  0.22 -0.11  0.32  0.33
-##       Q12   Q13   Q14   Q15   Q16   Q17   Q18   Q19   Q20   Q21   Q22
-## Q01  0.35  0.35  0.34  0.25  0.50  0.37  0.35 -0.19  0.21  0.33 -0.10
-## Q02 -0.19 -0.14 -0.16 -0.16 -0.17 -0.09 -0.16  0.20 -0.20 -0.20  0.23
-## Q03 -0.41 -0.32 -0.37 -0.31 -0.42 -0.33 -0.38  0.34 -0.32 -0.42  0.20
-## Q04  0.44  0.34  0.35  0.33  0.42  0.38  0.38 -0.19  0.24  0.41 -0.10
-## Q05  0.35  0.30  0.32  0.26  0.39  0.31  0.32 -0.17  0.20  0.33 -0.13
-## Q06  0.31  0.47  0.40  0.36  0.24  0.28  0.51 -0.17  0.10  0.27 -0.17
-##       Q23
-## Q01  0.00
-## Q02  0.10
-## Q03  0.15
-## Q04 -0.03
-## Q05 -0.04
-## Q06 -0.07
+##       Q01   Q02   Q03   Q04   Q05   Q06   Q07   Q08   Q09   Q10   Q11   Q12
+## Q01  1.00 -0.10 -0.34  0.44  0.40  0.22  0.31  0.33 -0.09  0.21  0.36  0.35
+## Q02 -0.10  1.00  0.32 -0.11 -0.12 -0.07 -0.16 -0.05  0.31 -0.08 -0.14 -0.19
+## Q03 -0.34  0.32  1.00 -0.38 -0.31 -0.23 -0.38 -0.26  0.30 -0.19 -0.35 -0.41
+## Q04  0.44 -0.11 -0.38  1.00  0.40  0.28  0.41  0.35 -0.12  0.22  0.37  0.44
+## Q05  0.40 -0.12 -0.31  0.40  1.00  0.26  0.34  0.27 -0.10  0.26  0.30  0.35
+## Q06  0.22 -0.07 -0.23  0.28  0.26  1.00  0.51  0.22 -0.11  0.32  0.33  0.31
+##       Q13   Q14   Q15   Q16   Q17   Q18   Q19   Q20   Q21   Q22   Q23
+## Q01  0.35  0.34  0.25  0.50  0.37  0.35 -0.19  0.21  0.33 -0.10  0.00
+## Q02 -0.14 -0.16 -0.16 -0.17 -0.09 -0.16  0.20 -0.20 -0.20  0.23  0.10
+## Q03 -0.32 -0.37 -0.31 -0.42 -0.33 -0.38  0.34 -0.32 -0.42  0.20  0.15
+## Q04  0.34  0.35  0.33  0.42  0.38  0.38 -0.19  0.24  0.41 -0.10 -0.03
+## Q05  0.30  0.32  0.26  0.39  0.31  0.32 -0.17  0.20  0.33 -0.13 -0.04
+## Q06  0.47  0.40  0.36  0.24  0.28  0.51 -0.17  0.10  0.27 -0.17 -0.07
 {% endhighlight %}
-If got warning message about non-positive definite matrix, then check the R's Souls' Tip 17.1.
+(If got warning message about non-positive definite matrix, then check the R's Souls' Tip 17.1.)
 
-First, scan the matrix for correlations greater than .3, then look for variables that only have a small number of correlations greater than this value. Then scan the correlation coefficients themselves and look for any greater than .9. If any are found then you should be aware that a problem could arise because of multicollinearity in the data.
+Now it's time to check the correlations. First, scan the matrix for correlations greater than .3, then look for variables that only have a small number of correlations greater than this value. Then scan the correlation coefficients themselves and look for any greater than .9. If any are found then you should be aware that a problem could arise because of multicollinearity in the data.
 
-Then, run Bartlett's test on the correlation matrix by using `cortest.bartlett()` from `psych` package.
+Then, to inspect the correlation matrix, we should run Bartlett's test by using `cortest.bartlett()` from `psych` package. We can run this test either on the raw data or on the correlation matrix. Both will give you the same results below.
+
 
 {% highlight r %}
 cortest.bartlett(raqData)
@@ -117,7 +170,7 @@ cortest.bartlett(raqData)
 
 {% highlight text %}
 ## $chisq
-## [1] 19334
+## [1] 19334.49
 ## 
 ## $p.value
 ## [1] 0
@@ -134,7 +187,9 @@ cortest.bartlett(raqData)
 {% endhighlight %}
 For these data, Bartlett’s test is highly significant, χ2(253) = 19,334, p < .001, and therefore factor analysis is appropriate.
 
-Then, we could get the determinant:
+Alternatively, we can use the Kaiser–Meyer–Olkin (KMO) measure of sampling adequacy (i.e., to determine if the sample size is big enough). However, I choose to skip this part to keep this post concise.
+
+Finally, we could get the determinant:
 
 {% highlight r %}
 det(raqMatrix)
@@ -143,7 +198,7 @@ det(raqMatrix)
 
 
 {% highlight text %}
-## [1] 0.00053
+## [1] 0.0005271037
 {% endhighlight %}
 This value is greater than the necessary value of 0.00001 (see section 17.5). As such, our determinant does not seem problematic. 
 
@@ -203,7 +258,7 @@ sum(large.resid)/nrow(residuals)
 
 
 {% highlight text %}
-## [1] 0.36
+## [1] 0.3596838
 {% endhighlight %}
 Some other residuals stats, such as the mean, are skipped here.
 
@@ -260,7 +315,7 @@ print.psych(pc3, cut = 0.3, sort = TRUE)
 ## Test of the hypothesis that 4 components are sufficient.
 ## 
 ## The root mean square of the residuals (RMSR) is  0.06 
-##  with the empirical chi square  4006  with prob <  0 
+##  with the empirical chi square  4006.15  with prob <  0 
 ## 
 ## Fit based upon off diagonal values = 0.96
 {% endhighlight %}
@@ -285,7 +340,7 @@ raqData <- cbind(raqData, pc5$scores)
 ### Reliability analysis
 If you’re using factor analysis to validate a questionnaire, it is useful to check the reliability of your scale.
 
-Reliability means that a measure (or in this case questionnaire) should consistently reflect the construct that it is measuring. One way to think of this is that, other things being equal, a person should get the same score on a questionnaire if they complete it at two different points in time (we have already discovered that this is called *test–retest reliability*).
+> Reliability means that a measure (or in this case questionnaire) should consistently reflect the construct that it is measuring. One way to think of this is that, other things being equal, a person should get the same score on a questionnaire if they complete it at two different points in time (we have already discovered that this is called *test–retest reliability*).
 
 The simplest way to do this in practice is to use `split-half reliability`. This method randomly splits the data set into two. A score for each participant is then calculated based on each half of the scale. If a scale is very reliable a person’s score on one half of the scale should be the same (or similar) to their score on the other half: two halves should correlate very highly.
 
@@ -325,21 +380,21 @@ alpha(computerFear)
 ## Reliability analysis   
 ## Call: alpha(x = computerFear)
 ## 
-##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd
-##       0.82      0.82    0.81       0.4 4.6 0.0052  3.4 0.71
+##   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+##       0.82      0.82    0.81       0.4 4.6 0.0052  3.4 0.71     0.39
 ## 
 ##  lower alpha upper     95% confidence boundaries
 ## 0.81 0.82 0.83 
 ## 
 ##  Reliability if an item is dropped:
-##     raw_alpha std.alpha G6(smc) average_r S/N alpha se
-## Q06      0.79      0.79    0.77      0.38 3.7   0.0063
-## Q07      0.79      0.79    0.77      0.38 3.7   0.0063
-## Q10      0.82      0.82    0.80      0.44 4.7   0.0053
-## Q13      0.79      0.79    0.77      0.39 3.8   0.0062
-## Q14      0.80      0.80    0.77      0.39 3.9   0.0060
-## Q15      0.81      0.81    0.79      0.41 4.2   0.0056
-## Q18      0.79      0.78    0.76      0.38 3.6   0.0064
+##     raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r med.r
+## Q06      0.79      0.79    0.77      0.38 3.7   0.0063 0.0081  0.38
+## Q07      0.79      0.79    0.77      0.38 3.7   0.0063 0.0079  0.36
+## Q10      0.82      0.82    0.80      0.44 4.7   0.0053 0.0043  0.44
+## Q13      0.79      0.79    0.77      0.39 3.8   0.0062 0.0081  0.38
+## Q14      0.80      0.80    0.77      0.39 3.9   0.0060 0.0085  0.36
+## Q15      0.81      0.81    0.79      0.41 4.2   0.0056 0.0095  0.44
+## Q18      0.79      0.78    0.76      0.38 3.6   0.0064 0.0058  0.38
 ## 
 ##  Item statistics 
 ##        n raw.r std.r r.cor r.drop mean   sd
@@ -381,16 +436,7 @@ The analysis of other three factors is very similar and thus skipped.
 
 #### Report reliability analysis (skipped)
 
-## 2. Questions
+## Conclusion
+Factor analysis is a technique to identify the smaller set of clusters of variables to represent the whole variance. This chapter actually uses PCA, which may have little difference from factor analysis. I skipped some details to avoid making the post too long. Also, you can check [Exploratory factor analysis on Wikipedia](https://en.wikipedia.org/wiki/Exploratory_factor_analysis) for more resources.
 
-* What is loading?
-
-* How to compute loading?
-
-* What is a Factor?
-
-* What is communality?
-
-* How to compute communality?
-
-
+Thanks for reading and feel free to correct me if I made any mistake.
