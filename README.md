@@ -7,9 +7,8 @@ Blog address: <https://gaopinghuang0.github.io>
 ### Install dependencies:
 
 **Important for Windows**: 
-Install ruby 2.4 from [rubyinstaller](https://rubyinstaller.org/downloads/) with DevKit. Then install the dependencies as below. If an error throws related to `eventmachine`, run `gem uninstall eventmachine` and `gem install eventmachine --platform ruby`, based on this [Github issue](https://github.com/oneclick/rubyinstaller2/issues/96#issuecomment-434619796).
+Install ruby 2.4+ from [rubyinstaller](https://rubyinstaller.org/downloads/) with DevKit. Then install the dependencies as below. If an error throws related to `eventmachine`, run `gem uninstall eventmachine` and `gem install eventmachine --platform ruby`, based on this [Github issue](https://github.com/oneclick/rubyinstaller2/issues/96#issuecomment-434619796).
 
-~~Do not install ruby version 2.3.3 because the `eventmachine` gem is not ready for Ruby 2.4+. See https://github.com/jekyll/jekyll/issues/7221.  Once installed ruby 2.3, we need to install the devkit manually. See this [document for DevKit](https://github.com/oneclick/rubyinstaller/wiki/Development-Kit) which is not working on my current Windows 10 machine!!  Therefore, stop working on Windows (as of 11/7/2019)~~. 
 ```bash
 $ gem install bundler  # bundler is a package manager for ruby, install it first if not yet
 $ bundle update & bundle install  # install based on Gemfile
@@ -45,10 +44,10 @@ $ ./auto_convert_rmd_on_change.sh _Rmd/<filename>.Rmd
 ```
 The installation and description of `when-changed` can be found at my blog [Usage of when-changed](https://gaopinghuang0.github.io/2018/05/23/when-changed-usage).
 
-### Post.excerpts for post in Chinese 
+### `Post.excerpts` for post in Chinese 
 In the index page, it is common to show a brief description of each post. Previously, I used `truncatewords: 30`, which is not good for Chinese characters or inline code block. Based on [this Jekyll doc](https://jekyllrb.com/docs/posts/), we can use `post.excerpts`. In the `index.html`, I additionally added `strip_html` filter because the inline code block will cause some bug. 
 
-By default, `post.excerpts` will use the first paragraph. To include multiple paragraphs as excerpts, we can set `excerpt_separator` in front matter or `_config.yml`. For Chinese chars, the first paragraph cannot be detected properly, therefore the `excerpt_separator` is usually needed.
+By default, `post.excerpts` will use the first paragraph. To include multiple paragraphs as excerpts, we can set `excerpt_separator` in the front matter or `_config.yml`. For Chinese chars, the first paragraph cannot be detected properly, therefore the `excerpt_separator` is usually needed.
 
 
 [Tale]: https://github.com/chesterhow/tale/
