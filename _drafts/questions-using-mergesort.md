@@ -14,4 +14,12 @@ This post covers several questions that make use of mergesort.
 
 > For example, [7,5,6,4] has 5 inversion pairs: (7,6), (7,5), (7,4), (6,4), and (5,4).
 
-## 2. 
+## 2. Leetcode 315. Count of Smaller Numbers After Self
+
+> You are given an integer array nums and you have to return a new counts array. The counts array has the property where counts[i] is the number of smaller elements to the right of nums[i].
+
+> Example:
+> Input: nums = [5,2,6,1]
+> Output: [2,1,1,0]
+
+
