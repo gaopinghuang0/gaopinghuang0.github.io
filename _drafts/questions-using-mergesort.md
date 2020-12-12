@@ -5,9 +5,13 @@ author: "Gaoping Huang"
 tags: [Python, Algorithm]
 use_math: false
 use_bootstrap: false
+excerpt_separator: <!--more-->
 ---
 
 This post covers several questions that make use of mergesort.
+
+<!-- 手动为一段或多段添加分隔符。这样才能正确的转换成 `post.excerpts`。 -->
+<!--more-->
 
 ## 1. Count inversion pairs in an array
 > Given an array A[1... n], for every i < j, find all inversion pairs such that A[i] > A[j]. Return the total number.
