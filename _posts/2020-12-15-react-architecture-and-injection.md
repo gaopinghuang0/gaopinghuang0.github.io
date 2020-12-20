@@ -7,7 +7,7 @@ use_math: false
 use_bootstrap: false
 excerpt_separator: <!--more-->
 ---
-During the process of re-implementing React.js in Typescript ([code at GitHub](https://github.com/gaopinghuang0/react-in-typescript)), I get a chance to look deeper into the source code of React. At this stage, I am focusing on an old version of React (v15.6.2), which essentially uses the [stack reconciler](https://github.com/facebook/react/tree/15-stable/src/renderers/shared/stack/reconciler). The newer version of React uses fiber reconciler, which will be covered in later posts.
+During the process of re-implementing React.js in Typescript ([code at GitHub](https://github.com/gaopinghuang0/react-in-typescript)), I get a chance to look deeper into the source code of React. At this stage, I am focusing on an old version of React (v15+), which essentially uses the [stack reconciler](https://github.com/facebook/react/tree/15-stable/src/renderers/shared/stack/reconciler). The newer version of React uses fiber reconciler, which will be covered in later posts.
 
 <!-- 手动为一段或多段添加分隔符。这样才能正确的转换成 `post.excerpts`。 -->
 <!--more-->
