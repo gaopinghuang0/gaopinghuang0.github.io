@@ -21,7 +21,7 @@ There are existing great articles on this topic:
 
 Given that Holmes He has already done a great work explaining many technical details, here I will only mention some parts that I feel interesting. Note that the source code is from an old version of React (v15+). The Fiber reconciler of React v16+ is using a different mechanism, which I will cover in the future. 
 
-## Scenarios of changes
+## ReactUpdateQueue
 
 React implements a batched updating mechanism for several scenarios, such as changing states via `setState()` within life cycles, re-rendering component tree within a container, and calling callbacks.  Here, let's ignore the `useState()` hooks because it is not part of V15+.
 
@@ -125,18 +125,87 @@ var ReactDefaultBatchingStrategy = {
 
 7) When `enqueueUpdate()` returns, `transaction` starts to close up all the wrappers. The `close()` of the first wrapper `FLUSH_BATCHED_UPDATES` is called. This method further calls `ReactUpdates.flushBatchedUpdates()`, which is the method that actually handles all the updates.
 
-8) 
+```js
+var flushBatchedUpdates = function () {
+  while (dirtyComponents.length || asapEnqueued) {
+    if (dirtyComponents.length) {
+      var transaction = ReactUpdatesFlushTransaction.getPooled();
+      transaction.perform(runBatchedUpdates, null, transaction);
+      ReactUpdatesFlushTransaction.release(transaction);
+    }
+   ...
+  }
+};
 
-8) Lastly, the `close()` of `RESET_BATCHED_UPDATES` is called, which sets `ReactDefaultBatchingStrategy.isBatchingUpdates` back to false and completes the circle.
+// src/renderers/shared/stack/reconciler/ReactUpdates.js
+```
 
-It is important to note that any successive calls of `enqueueUpdate()` between ???) and ???) are supposed to be executed in the context of `ReactDefaultBatchingStrategy.isBatchingUpdates:true`, meaning, all components that need re-rendering will be pushed into `dirtyComponents`. If in this process, the nested components are changed, then they will be pushed to dirty components as well.
+8) `ReactUpdatesFlushTransaction` is initialized and calls `runBatchedUpdates()` within this transaction.  We can see that an instance of `ReactUpdatesFlushTransaction` is obtained from a pool via `getPooled()`, and then is put back to the pool via `release()` after usage. These two methods come from `PooledClass`. However, there is a [discussion on GitHub about removing this class](https://github.com/facebook/react/issues/9325). It seems that the previous concerns about the deoptimization of `auguments` has been resolved by modern JS engine. Therefore, we can ignore this class.
 
-So, it's like
+9) `ReactUpdatesFlushTransaction` is also a subclass of `Transaction` but overrides the `perform()` method which will actually call `ReactReconcileTransaction.perform()`. In this way, it first initializes the wrappers of `ReactUpdatesFlushTransaction` and further initializes the wrappers of `ReactReconcileTransaction`.
+
+```js
+var NESTED_UPDATES = {
+  initialize: function() {
+    this.dirtyComponentsLength = dirtyComponents.length;
+  },
+  close: function() {
+    if (this.dirtyComponentsLength !== dirtyComponents.length) {
+      dirtyComponents.splice(0, this.dirtyComponentsLength);
+      flushBatchedUpdates();      // scr: ----------------------> a)
+    } else {
+      dirtyComponents.length = 0; // scr: ----------------------> b)
+    }
+  },
+};
+
+var UPDATE_QUEUEING = { // scr: ------> we omit this wrapper for now
+  initialize: function() {
+    this.callbackQueue.reset();
+  },
+  close: function() {
+    this.callbackQueue.notifyAll();
+  },
+};
+
+// Wrappers for ReactUpdatesFlushTransaction
+var TRANSACTION_WRAPPERS = [NESTED_UPDATES, UPDATE_QUEUEING];
+
+// src/renderers/shared/stack/reconciler/ReactUpdates.js
+```
+
+10)  In `initialize()` of the `NESTED_UPDATES` wrapper of `ReactUpdatesFlushTransaction`, the current number of `dirtyComponents` is stored. Also, the `this.callbackQueue` is reset in `UPDATE_QUEUEING`. Then `ReactUpdates.runBatchedUpdates()` is called within the nested transaction `ReactReconcileTransaction`. 
+
+```js
+function ReactReconcileTransaction(useCreateElement: boolean) {
+  this.reinitializeTransaction();
+  // Only server-side rendering really needs this option (see
+  // `ReactServerRendering`), but server-side uses
+  // `ReactServerRenderingTransaction` instead. This option is here so that it's
+  // accessible and defaults to false when `ReactDOMComponent` and
+  // `ReactDOMTextComponent` checks it in `mountComponent`.`
+  this.renderToStaticMarkup = false;
+  this.reactMountReady = CallbackQueue.getPooled(null);
+  this.useCreateElement = useCreateElement;
+}
+```
+
+11)  The wrappers of `ReactReconcileTransaction` are mostly related to the event and selection in browser.  We can ignore them. 
+ 
+12) However, inside the constructor of `ReactReconcileTransaction`, we find that the 
+
+13) In `close()` method of the `NESTED_UPDATES` wrapper, the stored number is compared to the latest number of `dirtyComponents`. If they are different, `flushBatchedUpdates()` is called again. Note that the two transactions (`ReactUpdatesFlushTransaction` and `ReactReconcileTransaction`) are initialized again, similar to step 8) and 9).  
+
+14) Also note that the `close()` of `UPDATE_QUEUEING` wrapper of `ReactUpdatesFlushTransaction` has not been called. It means that it is still in transaction. Essentially, `this.callbackQueue` is `reset()`. **It seems that there may be some callbacks that have never been triggered but cleared!**  *(I will come back later about this issue.)*
+
+???) Lastly, the `close()` of the wrapper `RESET_BATCHED_UPDATES` is called, which sets `ReactDefaultBatchingStrategy.isBatchingUpdates` back to false and completes the circle.
+
+It is important to note that any successive calls of `enqueueUpdate()` between 3) and ???) are supposed to be executed in the context of `ReactDefaultBatchingStrategy.isBatchingUpdates:true`. If any additional updates occur during this period (e.g., by `componentDidUpdate` or similar), those components will be pushed to `dirtyComponents` as well. So, it's like
 ```js
 dirtyComponents.push(component);   // 6)
 ReactUpdates.flushBatchedUpdates()  // 7)
-// Some nested updates
-dirtyComponents.push(component);   // 3)-6)
+// Some additional updates occur
+dirtyComponents.push(component);   // 6)
 dirtyComponents.push(component);   // 6)
 dirtyComponents.push(component);   // 6)
 ...
