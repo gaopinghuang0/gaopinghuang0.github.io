@@ -63,11 +63,16 @@ Pillai's trace is considered to be the most powerful and robust statistic for ge
 ## 3. MANOVA Using R
 
 ### 3.0 Packages
-You will need the packages `car` (for looking at Type III sums of squares), `ggplot2` (for graphs), `MASS` (for discriminant function analysis), `mvoutlier` (for plots to look for multivariate outliers), `mvnormtest` (to test for multivariate normality), `pastecs` (for descriptive statistics), `reshape` (for reshaping the data) and `WRS` (for robust tests). The MASS package is automatically installed, and just use `install.packages("package_name")` to install any package(s) that you don't already have. There is one exception `WRS`. To install it, run:
+You will need the packages `car` (for looking at Type III sums of squares), `ggplot2` (for graphs), `MASS` (for discriminant function analysis), `mvoutlier` (for plots to look for multivariate outliers), `mvnormtest` (to test for multivariate normality), `pastecs` (for descriptive statistics), `reshape` (for reshaping the data) and `WRS` (for robust tests). The MASS package is automatically installed, and just use `install.packages("package_name")` to install any package(s) that you don't already have. There is one exception `WRS`, which is a collection of R functions written by Rand Wilcox. In the book, the command to install it is as below, but seems outdated:
 ```R
 install.packages("WRS", repos="http://R-Forge.R-project.org")
 ```
-Then run `library(package_name)` for each of the package. Note that the code below may not use all of the packages above, because it is just a brief note of the more detailed book chapter.
+To install it properly, you can get it from [Wilcox's website](https://dornsife.usc.edu/labs/rwilcox/software/), which shows several options: 1) download it to disk and run R command `source(file.choose())`, 2) go to a GitHub website. I found a third way that runs the following code:
+```R
+# Directly source the latest version Rallfun-v38.txt
+source("https://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v38.txt")
+```
+Then there is no need to call: `library(WRS)`. Then run `library(package_name)` for other packages. Note that the code below may not use all of the packages above, because it is just a brief note of the more detailed book chapter. At least include `mvnormtest`.
 
 ### 3.1 Enter data
 The data is stored at: [assets/Rdata/OCD.dat](/assets/Rdata/OCD.dat).
