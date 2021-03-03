@@ -15,6 +15,7 @@ $ bundle update & bundle install  # install based on Gemfile
 ```
 
 **For Ubuntu**, check the [Jekyll on Ubuntu](https://jekyllrb.com/docs/installation/ubuntu/).
+**For MacOS**, check the [Jekyll on macOS](https://jekyllrb.com/docs/installation/macos/)
 
 ### Run server locally
 ```bash
@@ -25,6 +26,8 @@ $ bundle exec jekyll serve  --livereload --draft
 ```
 
 Then head to http://localhost:4000/ to see the site.
+
+If there is any error related to 'Cant find gem bundler (>= 0.a) with executable bundle', check [this solution](https://bundler.io/blog/2019/05/14/solutions-for-cant-find-gem-bundler-with-executable-bundle.html).
 
 ## Editing Blogs
 
