@@ -54,7 +54,7 @@ Packages and functions (order by alphabetical):
     * `confint()`, computes confidence interval
 * *WRS* - for robust tests, see section 5.8.4
   * Updated website: <http://dornsife.usc.edu/labs/rwilcox/software/>
-  * `source("http://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v34.txt")`  -- new website
+  * `source("http://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v34.txt")`  -- new website. Since all functions become available in R environment, there is no need to call `library(WRS)`.
   * `ancova()` and `ancboot()`, see section 11.5
 
 

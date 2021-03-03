@@ -72,7 +72,9 @@ To install it properly, you can get it from [Wilcox's website](https://dornsife.
 # Directly source the latest version Rallfun-v38.txt
 source("https://dornsife.usc.edu/assets/sites/239/docs/Rallfun-v38.txt")
 ```
-Then there is no need to call: `library(WRS)`. Then run `library(package_name)` for other packages. Note that the code below may not use all of the packages above, because it is just a brief note of the more detailed book chapter. At least include `mvnormtest`.
+Since all functions become available in R environment, there is no need to call `library(WRS)`. 
+
+Then run `library(package_name)` for other packages. Note that the code below may not use all of the packages above, because it is just a brief note of the more detailed book chapter. At least include `mvnormtest`.
 
 ### 3.1 Enter data
 The data is stored at: [assets/Rdata/OCD.dat](/assets/Rdata/OCD.dat).
