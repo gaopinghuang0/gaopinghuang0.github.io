@@ -31,7 +31,7 @@ $ when-changed [-vr1s] FILE COMMAND...
 ```
 
 ## Sample Usages
-The option `-v` is recommended to add to every usage below:
+The option `-v` is recommended to add to every usage below. Also, `-1` is useful to prevent re-running the same command if files are changed while command is running.
 ```bash
 #1. Watch a single FILE and exec COMMAND
 $ when-changed FILE COMMAND...
