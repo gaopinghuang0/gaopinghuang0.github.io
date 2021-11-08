@@ -100,14 +100,18 @@ Option two is to create a virtualenv, and use `pip install -e` with a proper `se
 
 A better option is to move `config.py` into a new subpackage, say `config/`, which contains `__init__.py` and `config.py`. Then we convert this problem into the case of importing from a sibling package, which has a solution above. More importantly, this option also works when the root project is not a package.
 
-The last option is to hack the `sys.path` if we do not want to move `config.py` to a subpackage nor turn the project as a package. Based on this [blog post](https://pythonadventures.wordpress.com/tag/import-from-parent-directory/) and [stackoverflow question](https://stackoverflow.com/a/11158224/4246348) by Remi, we can use the below code inside `helper.py`
+The last option is to hack the `sys.path` if we do not want to move `config.py` to a subpackage nor turn the project as a package. Based on this [blog post](https://pythonadventures.wordpress.com/tag/import-from-parent-directory/) and [stackoverflow question](https://stackoverflow.com/a/11158224/4246348) by Remi, we can put the below code inside a file called `environment.py`
 ```python
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
-
+```
+Then in `helper.py`, we first import it then import other modules.
+```python
+import environment  # This import can be put in each file, and will be executed for just once.
 import config
 ```
+
 Note: the `__file__` attribute is not always given. Instead of using `os.path.abspath(__file__)`, Remi suggested using the inspect module to retrieve the filename (and path) of the current file. After hacking `sys.path`, both `python -m sub1.helper` and `python helper.py` are valid now.
 
